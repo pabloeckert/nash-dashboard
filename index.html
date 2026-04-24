@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tablero Nash — Argentina: Poder, Alianzas y Escenarios</title>
+<meta name="description" content="Análisis estratégico de la política argentina mediante teoría de juegos de Nash. Mapa de poder, alianzas, escenarios y actores internos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loading">
+  <div class="loading-spinner"></div>
+  <p class="loading-text" id="loading-msg">Consultando fuentes…</p>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="logo-icon">N</div>
+      <div>
+        <h1 class="logo-title">Tablero Nash</h1>
+        <p class="logo-sub">Argentina · Poder · Alianzas · Escenarios</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="live-badge"><span class="live-dot"></span>En vivo</span>
+      <span class="last-update" id="last-update">—</span>
+      <button class="btn-primary" id="updateBtn" onclick="fetchUpdate()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Actualizar
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showPanel('dashboard',this)">Dashboard</button>
+    <button class="nav-btn" onclick="showPanel('actores',this)">Actores</button>
+    <button class="nav-btn" onclick="showPanel('congreso',this)">Congreso</button>
+    <button class="nav-btn" onclick="showPanel('provincias',this)">Provincias</button>
+    <button class="nav-btn" onclick="showPanel('alianzas',this)">Alianzas</button>
+    <button class="nav-btn" onclick="showPanel('sombra',this)">En la sombra</button>
+    <button class="nav-btn" onclick="showPanel('religion',this)">Religión</button>
+    <button class="nav-btn" onclick="showPanel('internacional',this)">Internacional</button>
+    <button class="nav-btn" onclick="showPanel('escenarios',this)">Escenarios Nash</button>
+    <button class="nav-btn" onclick="showPanel('feed',this)">Fuentes</button>
+  </div>
+</nav>
+
+<!-- Main -->
+<main class="main">
+
+<!-- ═══════════ DASHBOARD ═══════════ -->
+<div id="panel-dashboard" class="panel active">
+  <h2 class="section-title">Mapa de poder — Argentina 2026</h2>
+
+  <div class="metrics-grid">
+    <div class="metric-card metric-gold">
+      <span class="metric-value" id="inf-metric">3,4%</span>
+      <span class="metric-label">Inflación mar 2026</span>
+    </div>
+    <div class="metric-card metric-green">
+      <span class="metric-value" id="gdp-metric">+3,5%</span>
+      <span class="metric-label">Proyección PIB 2026 (FMI)</span>
+    </div>
+    <div class="metric-card metric-blue">
+      <span class="metric-value" id="rp-metric">634</span>
+      <span class="metric-label">Riesgo país (pb)</span>
+    </div>
+    <div class="metric-card metric-amber">
+      <span class="metric-value" id="pob-metric">31,6%</span>
+      <span class="metric-label">Pobreza (INDEC)</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 class="card-header">Temperatura del sistema</h3>
+      <div id="tension-list">
+        <div class="tension-row"><span class="tension-label">Interna Karina vs Caputo</span><div class="tbar"><div class="tbar-fill" style="width:88%"></div></div><span class="tension-val tbar-red">88%</span></div>
+        <div class="tension-row"><span class="tension-label">Nación vs Pcia de Buenos Aires</span><div class="tbar"><div class="tbar-fill" style="width:85%"></div></div><span class="tension-val tbar-red">85%</span></div>
+        <div class="tension-row"><span class="tension-label">Inflación vs meta presupuesto</span><div class="tbar"><div class="tbar-fill" style="width:80%"></div></div><span class="tension-val tbar-red">80%</span></div>
+        <div class="tension-row"><span class="tension-label">Conflicto social / ajuste</span><div class="tbar"><div class="tbar-fill" style="width:58%"></div></div><span class="tension-val tbar-amber">58%</span></div>
+        <div class="tension-row"><span class="tension-label">Gobernadores aliados: deserción</span><div class="tbar"><div class="tbar-fill" style="width:52%"></div></div><span class="tension-val tbar-amber">52%</span></div>
+        <div class="tension-row"><span class="tension-label">PRO como actor autónomo</span><div class="tbar"><div class="tbar-fill" style="width:46%"></div></div><span class="tension-val tbar-amber">46%</span></div>
+        <div class="tension-row"><span class="tension-label">Iglesias evangélicas (presión)</span><div class="tbar"><div class="tbar-fill" style="width:35%"></div></div><span class="tension-val tbar-amber">35%</span></div>
+        <div class="tension-row"><span class="tension-label">Medio Oriente → commodities</span><div class="tbar"><div class="tbar-fill" style="width:65%"></div></div><span class="tension-val tbar-amber">65%</span></div>
+        <div class="tension-row"><span class="tension-label">Relación FMI / mercados</span><div class="tbar"><div class="tbar-fill" style="width:25%"></div></div><span class="tension-val tbar-green">25%</span></div>
+        <div class="tension-row"><span class="tension-label">EEUU — acuerdo Vaca Muerta</span><div class="tbar"><div class="tbar-fill" style="width:20%"></div></div><span class="tension-val tbar-green">20%</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 class="card-header">Probabilidad de escenarios (dic 2026)</h3>
+      <div id="esc-mini"></div>
+      <div style="margin-top:20px">
+        <h3 class="card-header">Equilibrio de Nash observado</h3>
+        <p class="body-text" id="nash-summary">
+          El sistema político argentino opera actualmente en un <strong>equilibrio no cooperativo de segundo orden</strong>: Milei maximiza poder post-electoral pero no puede resolver la interna sin costo; los gobernadores desertan electoralmente pero cooperan legislativamente a cambio de ATN; la oposición está fragmentada y no puede articular estrategia dominante. El FMI funciona como jugador externo que disciplina al eje económico. El punto de quiebre es la inflación: si supera 35% anual, el equilibrio se rompe y el sistema migra al Escenario C.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3 class="card-header">Análisis cruzado — fuentes recientes</h3>
+    <div id="analysis-feed" class="body-text">Cargando análisis…</div>
+  </div>
+</div>
+
+<!-- ═══════════ ACTORES ═══════════ -->
+<div id="panel-actores" class="panel">
+  <h2 class="section-title">Actores internos del poder</h2>
+
+  <h3 class="subsection-title">Triángulo de hierro — LLA</h3>
+  <div class="grid-3" style="margin-bottom:24px">
+    <div class="player-card" onclick="togglePlayer(this)">
+      <div class="player-header">
+        <div class="avatar avatar-gold">JM</div>
+        <div><div class="player-name">Javier Milei</div><div class="player-role">Presidente — árbitro supremo</div></div>
+      </div>
+      <div class="player-detail">
+        <p class="body-text"><strong>Función de utilidad:</strong> maximizar imagen rumbo a reelección 2027. Arbitra interna Karina–Caputo sin elegir abiertamente hasta que el costo lo exige. Respaldó públicamente a Karina (abr 2026) al interactuar con mensajes de su entorno en X.</p>
+        <p class="body-text"><strong>Estrategia dominante:</strong> consolidar superávit + desinflación como narrativa central. Evitar agenda social que lo desgaste. Usar victorias legislativas (reforma laboral, acuerdo UE-Mercosur) como señal hacia mercados.</p>
+        <p class="body-text"><strong>Debilidad:</strong> la interna no resuelta genera bloqueos en gestión. Viaje a Israel (abr 2026) coincide con explosión pública de la interna.</p>
+        <div class="alliance-grid">
+          <span class="tag tag-solid">Karina Milei ✓</span>
+          <span class="tag tag-weak">Santiago Caputo ~</span>
+          <span class="tag tag-solid">Luis Caputo ✓</span>
+          <span class="tag tag-solid">Trump / EEUU ✓</span>
+          <span class="tag tag-weak">PRO ~</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="player-card" onclick="togglePlayer(this)">
+      <div class="player-header">
+        <div class="avatar avatar-purple">KM</div>
+        <div><div class="player-name">Karina Milei</div><div class="player-role">Secretaria General — "El Jefe"</div></div>
+      </div>
+      <div class="player-detail">
+        <p class="body-text"><strong>Movimientos recientes (abr 2026):</strong> impulsa desplazamiento de Caputo de la SIDE; responsabiliza a Caputo por filtraciones del caso Libra; controla 4 de 9 ministerios: Defensa, Seguridad, Justicia e Interior.</p>
+        <p class="body-text"><strong>Táctica:</strong> armado territorial vertical. Control de candidaturas 2027. Bloqueó 203 ternas de jueces armadas por Caputo durante 2 años.</p>
+        <div class="alliance-grid">
+          <span class="tag tag-solid">Lilia Lemoine ✓</span>
+          <span class="tag tag-solid">Martín Menem ✓</span>
+          <span class="tag tag-solid">Sebastián Pareja ✓</span>
+          <span class="tag tag-hostile">Santiago Caputo ✗</span>
+          <span class="tag tag-solid">Mahiques (Justicia) ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="player-card" onclick="togglePlayer(this)">
+      <div class="player-header">
+        <div class="avatar avatar-red">SC</div>
+        <div><div class="player-name">Santiago Caputo</div><div class="player-role">Asesor presidencial — "Las Fuerzas del Cielo"</div></div>
+      </div>
+      <div class="player-detail">
+        <p class="body-text"><strong>Status actual:</strong> bajo presión máxima. Perdió control de Justicia (salida de Amerio, llegada de Mahiques). Amenaza con renuncia si pierde la SIDE.</p>
+        <p class="body-text"><strong>Activos restantes:</strong> influencia comunicacional, "Gordo Dan" y ecosistema digital libertario, vínculo personal con Javier Milei.</p>
+        <p class="body-text"><strong>Riesgo:</strong> si renuncia, vacío estratégico en comunicación digital y posible faccionalismo abierto dentro de LLA.</p>
+        <div class="alliance-grid">
+          <span class="tag tag-solid">Gordo Dan / Fuerzas Cielo ✓</span>
+          <span class="tag tag-hostile">Karina Milei ✗</span>
+          <span class="tag tag-weak">Javier Milei ~</span>
+          <span class="tag tag-neutral">Luis Caputo ≈</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">Gabinete económico</h3>
+  <div class="grid-2" style="margin-bottom:24px">
+    <div class="player-card" onclick="togglePlayer(this)">
+      <div class="player-header">
+        <div class="avatar avatar-green">LC</div>
+        <div><div class="player-name">Luis Caputo</div><div class="player-role">Ministro de Economía</div></div>
+      </div>
+      <div class="player-detail">
+        <p class="body-text">Pilar del programa de estabilización. Superávit fiscal mantenido. Levantamiento del cepo (abr 2025). Acuerdo FMI en curso. Políticamente "independiente" según el propio gobierno.</p>
+        <p class="body-text"><strong>Desafío 2026:</strong> inflación de marzo 3,4% contradice meta presupuestaria del 10,1% anual. FMI proyecta 30,4%. Su credibilidad como âncora está en juego.</p>
+      </div>
+    </div>
+    <div class="player-card" onclick="togglePlayer(this)">
+      <div class="player-header">
+        <div class="avatar avatar-teal">FS</div>
+        <div><div class="player-name">Federico Sturzenegger</div><div class="player-role">Desregulación — vínculo directo con Milei</div></div>
+      </div>
+      <div class="player-detail">
+        <p class="body-text">Celebrado internacionalmente: Argentina fue en 2025 el país con la mayor mejora en libertad económica del mundo. Relación directa con el presidente. Clave para el Pacto de Mayo y agenda de privatizaciones.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">Figuras emergentes</h3>
+  <div class="card">
+    <p class="body-text"><strong>Ramiro Marra / Lule Menem / Martín Menem:</strong> bloque familiar-territorial dentro de LLA. Martín Menem preside la Cámara de Diputados.</p>
+    <p class="body-text"><strong>Manuel Adorni (Jefe de Gabinete):</strong> investigado por enriquecimiento ilícito. Karina lo respaldó públicamente. Posible candidato a jefe de gobierno porteño.</p>
+    <p class="body-text"><strong>Juan Bautista Mahiques (Justicia):</strong> nuevo referente del eje karinista. Promovido por Karina con apoyo de Angelici.</p>
+    <p class="body-text"><strong>Patricia Bullrich (Seguridad):</strong> bajo el eje de Karina. Obtuvo más del 50% en CABA (alianza LLA-PRO). Posible candidata a senadora.</p>
+    <p class="body-text"><strong>Sandra Pettovello (Capital Humano):</strong> figura en equilibrio entre Karina y el presidente. Administra el área social más sensible.</p>
+  </div>
+</div>
+
+<!-- ═══════════ CONGRESO ═══════════ -->
+<div id="panel-congreso" class="panel">
+  <h2 class="section-title">El Congreso — correlación de fuerzas</h2>
+
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <h3 class="card-header">Cámara de Diputados</h3>
+      <table class="data-table">
+        <thead><tr><th>Bloque</th><th>Bancas</th><th>Posición</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td>La Libertad Avanza</td><td class="text-gold">~130+</td><td><span class="tag tag-solid">oficialismo</span></td><td>Primera minoría post oct-2025</td></tr>
+          <tr><td>Unión por la Patria</td><td>~99</td><td><span class="tag tag-hostile">oposición dura</span></td><td>Bloque resistencia social</td></tr>
+          <tr><td>PRO</td><td>~38</td><td><span class="tag tag-weak">aliado táctico</span></td><td>Bullrich + Macri oscilan</td></tr>
+          <tr><td>Provincias Unidas</td><td>~28</td><td><span class="tag tag-neutral">bisagra</span></td><td>Poder de negociación clave</td></tr>
+          <tr><td>UCR / Evolución</td><td>~22</td><td><span class="tag tag-weak">volátil</span></td><td>Dividido tema a tema</td></tr>
+          <tr><td>Hacemos / Reg.</td><td>~18</td><td><span class="tag tag-neutral">pragmático</span></td><td>Negocia caso a caso</td></tr>
+        </tbody>
+      </table>
+      <p class="table-note">Presidente: Martín Menem (LLA). Para 2/3 necesita 172 votos — LLA no los tiene solo.</p>
+    </div>
+
+    <div class="card">
+      <h3 class="card-header">Senado de la Nación</h3>
+      <table class="data-table">
+        <thead><tr><th>Bloque</th><th>Bancas</th><th>Posición</th><th>Nota</th></tr></thead>
+        <tbody>
+          <tr><td>Unión por la Patria</td><td>~33</td><td><span class="tag tag-hostile">oposición</span></td><td>Tienen la llave de las PASO</td></tr>
+          <tr><td>La Libertad Avanza</td><td>~22</td><td><span class="tag tag-solid">oficialismo</span></td><td>Creció en oct-2025</td></tr>
+          <tr><td>PRO</td><td>~8</td><td><span class="tag tag-weak">táctico</span></td><td>Natalia Gadano (Santa Cruz)</td></tr>
+          <tr><td>Peronismo aliado</td><td>~12</td><td><span class="tag tag-neutral">negociador</span></td><td>Jaldo, Jalil, Sáenz</td></tr>
+          <tr><td>UCR / otros</td><td>~9</td><td><span class="tag tag-weak">volátil</span></td><td>Divide por tema</td></tr>
+        </tbody>
+      </table>
+      <p class="table-note">El peronismo controla el Senado como trinchera. Vicepresidenta: Victoria Villarruel (LLA).</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <h3 class="card-header">Victoria Villarruel — el comodín del sistema</h3>
+    <p class="body-text"><strong>Rol institucional:</strong> Presidenta del Senado. Poder de desempate y conducción del cuerpo. Puede facilitar o bloquear la agenda del Ejecutivo.</p>
+    <p class="body-text"><strong>Tensión con Milei:</strong> episodios de distanciamiento público. Perfil propio ligado a la derecha tradicional y al mundo militar.</p>
+    <p class="body-text"><strong>Hipótesis:</strong> podría ser el "tapado" para construir un espacio propio de cara a 2027 si el desgaste de LLA se acelera.</p>
+    <div class="alliance-grid">
+      <span class="tag tag-weak">Milei ~</span>
+      <span class="tag tag-neutral">PRO ≈</span>
+      <span class="tag tag-solid">Sector militar ✓</span>
+      <span class="tag tag-neutral">Gobernadores norte ≈</span>
+      <span class="tag tag-hostile">Kirchnerismo ✗</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-header">Agenda legislativa 2026</h3>
+    <table class="data-table">
+      <thead><tr><th>Proyecto</th><th>Estado</th><th>Actores clave</th><th>Análisis Nash</th></tr></thead>
+      <tbody>
+        <tr><td>Reforma laboral</td><td class="text-green">Aprobada ✓</td><td>Provincias Unidas + PRO</td><td>ATN como precio pagado</td></tr>
+        <tr><td>Acuerdo Mercosur-UE</td><td class="text-green">Media sanción ✓</td><td>Cancillería + oposición moderada</td><td>Consenso amplio</td></tr>
+        <tr><td>Eliminación PASO</td><td class="text-amber">En debate ⟳</td><td>Senado KA tiene la llave</td><td>Peronismo pedirá precio alto</td></tr>
+        <tr><td>Reforma política (uninominal)</td><td class="text-red">Bloqueada ✗</td><td>Resistencia multi-bloque</td><td>Gobernadores jamás consienten</td></tr>
+        <tr><td>Baja edad imputabilidad</td><td class="text-green">Aprobada ✓</td><td>Bullrich / PRO</td><td>Victoria de imagen para LLA</td></tr>
+        <tr><td>Ley de Glaciares</td><td class="text-amber">Media sanción Senado</td><td>Provincias mineras</td><td>Tensión con Mendoza, San Juan</td></tr>
+        <tr><td>Tratado PCT (Patentes)</td><td class="text-red">Demorado ✗</td><td>Laboratorios nacionales</td><td>Interna Karina–Caputo lo traba</td></tr>
+        <tr><td>Presupuesto 2026</td><td class="text-green">Aprobado ✓</td><td>Acuerdo amplio</td><td>Primera victoria post oct-2025</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════ PROVINCIAS ═══════════ -->
+<div id="panel-provincias" class="panel">
+  <h2 class="section-title">Mapa provincial — actores y alianzas</h2>
+  <div class="grid-2">
+    <div class="card">
+      <h3 class="card-header">Provincias — clic para detalle</h3>
+      <div id="province-list"></div>
+    </div>
+    <div class="col-stack">
+      <div class="card">
+        <h3 class="card-header">Matriz de transferencias (2025 vs 2023)</h3>
+        <table class="data-table">
+          <thead><tr><th>Provincia</th><th>Var. discrecional</th><th>Tendencia</th></tr></thead>
+          <tbody>
+            <tr><td>La Rioja (Quintela)</td><td class="text-red">−87,9%</td><td>Opositora dura</td></tr>
+            <tr><td>Formosa (Insfrán)</td><td class="text-red">−72,1%</td><td>Opositora dura</td></tr>
+            <tr><td>La Pampa</td><td class="text-red">−70,9%</td><td>Opositora</td></tr>
+            <tr><td>CABA</td><td class="text-green">+57,3%</td><td>Aliada (Corte Suprema)</td></tr>
+            <tr><td>Neuquén (Figueroa)</td><td class="text-green">+récord</td><td>Aliada (incendios)</td></tr>
+            <tr><td>Salta (Sáenz)</td><td class="text-green">+fondos</td><td>Aliada variable</td></tr>
+            <tr><td>Bs. As. (Kicillof)</td><td class="text-red">Ajuste 20%</td><td>Hostil</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3 class="card-header">Dilema del desdoblamiento 2027</h3>
+        <p class="body-text"><strong>Nación quiere unificación</strong> para que el arrastre de Milei beneficie a candidatos LLA.</p>
+        <p class="body-text"><strong>Gobernadores dicen "no hay chance."</strong> Córdoba y Santa Fe ya confirmaron desdoblamiento. Buenos Aires evalúa.</p>
+        <p class="body-text"><strong>Juego de Nash:</strong> cada gobernador tiene incentivo a desdoblar. Si todos desdoblan, Milei pierde la herramienta de arrastre pero no puede castigar a todos. Se esperan 12-14 provincias desdobladas.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ALIANZAS ═══════════ -->
+<div id="panel-alianzas" class="panel">
+  <h2 class="section-title">Mapa de alianzas</h2>
+  <div class="grid-3">
+    <div class="card card-green-accent">
+      <h3 class="card-header" style="color:var(--green-700)">Alianzas sólidas</h3>
+      <p class="body-text"><strong>LLA — Casa Rosada:</strong> Karina, L. Caputo, Adorni, Pettovello, Sturzenegger. Núcleo duro cohesionado.</p>
+      <p class="body-text"><strong>Milei — Trump (EEUU):</strong> alineamiento ideológico total. Vaca Muerta como convergencia energética.</p>
+      <p class="body-text"><strong>Milei — Netanyahu / Israel:</strong> relación personal intensa. Múltiples viajes. Conversión al judaísmo en proceso.</p>
+      <p class="body-text"><strong>Santa Cruz (Vidal) — Nación:</strong> Senadora Gadano + ATN de $100M. Relación consolidada.</p>
+      <p class="body-text"><strong>LLA — Evangélicos:</strong> apoyo transversal. Pastores clave como puentes territoriales.</p>
+    </div>
+
+    <div class="card card-amber-accent">
+      <h3 class="card-header" style="color:var(--amber-700)">Alianzas débiles / volátiles</h3>
+      <p class="body-text"><strong>LLA — PRO (Macri):</strong> alianza en CABA pero Macri explora autonomía. "Convivencia sin fusión".</p>
+      <p class="body-text"><strong>LLA — Provincias Unidas:</strong> 6 gobernadores. Apoyan caso a caso. Tienen poder de veto.</p>
+      <p class="body-text"><strong>LLA — Peronismo aliado:</strong> Jaldo, Jalil, Sáenz. Volvieron al consenso a mediados de 2025.</p>
+      <p class="body-text"><strong>Argentina — Mercosur:</strong> acuerdo UE representa avance pero relación con Brasil y Venezuela es tensa.</p>
+    </div>
+
+    <div class="card card-red-accent">
+      <h3 class="card-header" style="color:var(--red-700)">Alianzas rotas / hostilidad</h3>
+      <p class="body-text"><strong>Nación — Buenos Aires (Kicillof):</strong> "asfixia financiera" institucionalizada. Conflicto total.</p>
+      <p class="body-text"><strong>Nación — Formosa / La Rioja:</strong> −72% y −87% de transferencias. Relación rota.</p>
+      <p class="body-text"><strong>LLA — Kirchnerismo:</strong> confrontación total en todos los ámbitos.</p>
+      <p class="body-text"><strong>Argentina — China (Hidrovía):</strong> licitación excluyó empresas con capitales soberanos. Tensión silenciosa.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ EN LA SOMBRA ═══════════ -->
+<div id="panel-sombra" class="panel">
+  <h2 class="section-title">Actores en la sombra</h2>
+  <div class="grid-2">
+    <div class="col-stack">
+      <div class="card card-purple-accent">
+        <h3 class="card-header" style="color:var(--purple-700)">Operadores judiciales y de inteligencia</h3>
+        <p class="body-text"><strong>Cristian Auguarda (SIDE / Caputo):</strong> conducción actual de la SIDE bajo influencia de Santiago Caputo. Objetivo de desplazamiento por Karina.</p>
+        <p class="body-text"><strong>Diego Kravetz (Sub-SIDE):</strong> salida prevista para competir por intendencia de Lanús.</p>
+        <p class="body-text"><strong>Sebastián Amerio (ex-Justicia):</strong> desplazado por Mahiques. Compensado con la Procuración del Tesoro.</p>
+        <p class="body-text"><strong>Eduardo Casal (Procurador interino):</strong> 9 años de interinato. Sin designación definitiva.</p>
+      </div>
+      <div class="card card-purple-accent">
+        <h3 class="card-header" style="color:var(--purple-700)">Ecosistema digital libertario</h3>
+        <p class="body-text"><strong>Daniel Parisini "Gordo Dan":</strong> influencer clave del ecosistema Caputo. Alcance masivo en redes.</p>
+        <p class="body-text"><strong>Lilia Lemoine (diputada):</strong> operadora del eje Karina en el Congreso. El cruce con Gordo Dan fue la "ruptura de Perón con Montoneros".</p>
+        <p class="body-text"><strong>Agustín Laje / Javier Negrete / Iñaki Gutiérrez:</strong> generadores de contenido ideológico libertario. Sin cargo formal pero influencia real.</p>
+      </div>
+    </div>
+    <div class="col-stack">
+      <div class="card card-purple-accent">
+        <h3 class="card-header" style="color:var(--purple-700)">Empresarios y poderes económicos</h3>
+        <p class="body-text"><strong>Techint / Rocca:</strong> lobby transversal. Beneficiado por acuerdo Mercosur-UE.</p>
+        <p class="body-text"><strong>YPF / Vaca Muerta:</strong> eje energético como herramienta geopolítica. Chevron, Shell, TotalEnergies.</p>
+        <p class="body-text"><strong>Grupo Clarín / La Nación:</strong> acompañaron el cambio pero mantienen independencia.</p>
+        <p class="body-text"><strong>Laboratorios nacionales:</strong> resistencia al Tratado de Patentes (PCT). Lograron trabar legislación.</p>
+      </div>
+      <div class="card card-purple-accent">
+        <h3 class="card-header" style="color:var(--purple-700)">Sergio Massa y el kirchnerismo</h3>
+        <p class="body-text"><strong>Massa:</strong> mantiene influencia en la Policía de Seguridad Aeroportuaria (PSA). Señalado como posible fuente de filtraciones.</p>
+        <p class="body-text"><strong>Mario Ishii (José C. Paz):</strong> intendente peronista. Puente entre territorio bonaerense y bloque KA.</p>
+        <p class="body-text"><strong>Cristina Kirchner:</strong> proceso judicial activo. Comodoro Py es el campo de batalla político más encubierto.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ RELIGIÓN ═══════════ -->
+<div id="panel-religion" class="panel">
+  <h2 class="section-title">Religión, sociedad y poder blando</h2>
+  <div class="grid-2">
+    <div class="col-stack">
+      <div class="card">
+        <h3 class="card-header">Iglesias evangélicas</h3>
+        <p class="body-text"><strong>Peso electoral:</strong> 10-15% del padrón nacional. Alta concentración en conurbano, NOA y Norte. Votó masivamente a Milei.</p>
+        <p class="body-text"><strong>Referentes:</strong> Pastor Jorge Himitian, Pastor Dante Gebel. Pastores como líderes territoriales con capacidad de movilización comparable a punteros peronistas.</p>
+        <p class="body-text"><strong>Tensión emergente:</strong> reducción del plan MESA genera fricción con pastores de barrios humildes.</p>
+        <div class="alliance-grid">
+          <span class="tag tag-solid">Milei / LLA ✓</span>
+          <span class="tag tag-solid">Agenda conserv. ✓</span>
+          <span class="tag tag-weak">Ajuste social ~</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="card-header">Iglesia Católica</h3>
+        <p class="body-text"><strong>Francisco (Papa):</strong> relación compleja y distante con Milei. La Iglesia argentina tiene posición crítica sobre el ajuste social.</p>
+        <p class="body-text"><strong>CEA:</strong> preocupación creciente por pobreza. Documentos como señal de alerta.</p>
+        <p class="body-text"><strong>Cáritas:</strong> primer receptor del ajuste. La red de solidaridad no puede absorber toda la presión.</p>
+        <div class="alliance-grid">
+          <span class="tag tag-hostile">Milei ✗</span>
+          <span class="tag tag-solid">Peronistas ✓</span>
+          <span class="tag tag-neutral">Sociedad civil ≈</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-stack">
+      <div class="card">
+        <h3 class="card-header">Judaísmo — eje Milei/Israel</h3>
+        <p class="body-text"><strong>AMIA / DAIA:</strong> Milei ratificó alineamiento con EEUU e Israel. Comunidad judía (~200.000) con alta representación en medios, finanzas y academia.</p>
+        <p class="body-text"><strong>Conversión de Milei:</strong> proceso en curso. 3 viajes a Israel en 2 años. Dimensión espiritual y geopolítica.</p>
+      </div>
+      <div class="card">
+        <h3 class="card-header">Otras religiones y dimensión sociocultural</h3>
+        <p class="body-text"><strong>Islam:</strong> comunidad pequeña pero activa en triple frontera. Agenda antiterrorista con EEUU tiene implicancias.</p>
+        <p class="body-text"><strong>Pueblos originarios:</strong> Ley de Glaciares y minería generan conflictos por derechos territoriales.</p>
+        <p class="body-text"><strong>Masones y logias:</strong> actor histórico con presencia en Poder Judicial y FFAA. Simpatía moderada por Milei.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ INTERNACIONAL ═══════════ -->
+<div id="panel-internacional" class="panel">
+  <h2 class="section-title">Política internacional — escenarios y alianzas</h2>
+  <div id="intl-list"></div>
+</div>
+
+<!-- ═══════════ ESCENARIOS NASH ═══════════ -->
+<div id="panel-escenarios" class="panel">
+  <h2 class="section-title">Escenarios al 31 de diciembre 2026</h2>
+
+  <div class="card" style="margin-bottom:16px">
+    <h3 class="card-header">Modelo matemático de Nash — supuestos</h3>
+    <p class="body-text">Juego no-cooperativo de N jugadores donde cada actor maximiza su función de utilidad dado el comportamiento esperado de los demás. Las probabilidades son estimaciones cualitativas basadas en análisis de fuentes múltiples y modelado histórico comparado (crisis argentina 2001, México 1994, Brasil 2015, Grecia 2010).</p>
+  </div>
+
+  <div id="scenarios-list"></div>
+
+  <div class="card" style="margin-top:16px">
+    <h3 class="card-header">Matriz de pagos — Nación vs Gobernadores</h3>
+    <div style="overflow-x:auto">
+      <table class="matrix-table">
+        <thead>
+          <tr><th></th><th>Gobernadores cooperan (unifican 2027)</th><th>Gobernadores desertan (desdoblan)</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>Milei libera ATN generosamente</th><td class="nash-eq">Milei: 4 / Gov: 4<br>Equilibrio cooperativo</td><td class="bad-eq">Milei: 2 / Gov: 5<br>Gov se llevan fondos sin ceder votos</td></tr>
+          <tr><th>Milei restringe transferencias</th><td class="mixed-eq">Milei: 5 / Gov: 2<br>Milei controla; gobernadores pierden</td><td class="nash-eq">Milei: 3 / Gov: 3<br>Equilibrio dominante actual</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Estado actual: (restricción / desdoblamiento) — dilema del prisionero clásico. Salida cooperativa requiere compromiso creíble.</p>
+  </div>
+</div>
+
+<!-- ═══════════ FEED ═══════════ -->
+<div id="panel-feed" class="panel">
+  <h2 class="section-title">Feed de fuentes y análisis</h2>
+  <div class="grid-2">
+    <div class="card">
+      <h3 class="card-header">Fuentes consultadas — metodología</h3>
+      <p class="body-text"><strong>Medios argentinos:</strong> La Nación, Infobae, Clarín, El Cronista, Bloomberg Línea, Chequeado, elDiarioAR, Ámbito.</p>
+      <p class="body-text"><strong>Think tanks:</strong> IERAL (Fundación Mediterránea), LCG, Invecq, IARAF, FocusEconomics, Deloitte LATAM.</p>
+      <p class="body-text"><strong>Organismos internacionales:</strong> FMI (WEO abril 2026), BCRA (REM marzo 2026), Banco Mundial, OCDE, BID.</p>
+      <p class="body-text"><strong>Medios internacionales:</strong> The Economist, Financial Times, Bloomberg, Reuters, El País.</p>
+      <p class="body-text"><strong>Analistas clave:</strong> Jorge Lanata, Eduardo van der Kooy, Marcelo Bonelli, Carlos Pagni, Rosendo Fraga, Sergio Berensztein, Alejandro Catterberg.</p>
+    </div>
+    <div class="card">
+      <h3 class="card-header">Análisis generado</h3>
+      <div id="feed-list"><p class="body-text">Presioná "Actualizar" para cargar el análisis más reciente.</p></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
