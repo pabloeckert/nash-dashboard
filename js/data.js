@@ -1,135 +1,166 @@
 /**
  * Tablero Nash — Datos del Dashboard
- * Fuentes: INDEC, BCRA, Congreso de la Nación, medios públicos
  * Última actualización: 2026-04-25
+ *
+ * Fuentes cruzadas:
+ * - INDEC (ipc, pobreza, EMAE): indec.gob.ar
+ * - BCRA (riesgo país, política monetaria): bcra.gob.ar
+ * - JP Morgan (riesgo país): perfil.com, sintesisargentina
+ * - Honorable Senado de la Nación (composición): senado.gob.ar
+ * - Honorable Cámara de Diputados (composición): diputados.gov.ar
+ * - Directorio Legislativo (análisis post-elecciones 2025)
+ * - Ministerio de Capital Humano (pobreza)
+ * - Infobae (EMAE, actividad económica)
  */
 
 const NASH_DATA = {
   meta: {
-    version: '1.0.0',
+    version: '1.1.0',
     lastUpdate: '2026-04-25',
+    dataDate: '2026-04-25',
     sources: {
-      inflation: 'INDEC',
-      gdp: 'INDEC',
-      risk: 'BCRA / JP Morgan',
-      poverty: 'INDEC',
-      congress: 'Honorable Congreso de la Nación',
-      provinces: 'Ministerio del Interior'
-    }
+      inflation: 'INDEC — IPC Marzo 2026 (publicado abril 2026)',
+      gdp: 'INDEC — EMAE Febrero 2026 (publicado abril 2026)',
+      risk: 'JP Morgan vía Perfil.com — 22 abril 2026',
+      poverty: 'INDEC/Ministerio de Capital Humano — EPH T3 2025 (publicado feb 2026)',
+      congress: 'Senado.gob.ar + Diputados.gob.ar — composición post-elecciones oct 2025',
+      provinces: 'Directorio Legislativo + medios provinciales'
+    },
+    notes: [
+      'Inflación: mensual marzo 3.4%, acumulada año ~9.3%',
+      'Riesgo País: 535 pbs al 22/04/2026, alta volatilidad',
+      'Pobreza: último dato oficial INDEC semestral = 31.6% (H1 2025). Estimación ministerio T3 2025 = 26.9%',
+      'EMAE: -2.6% interanual febrero 2026',
+      'Congreso: post-elecciones legislativas oct 2025, nuevos legisladores asumieron dic 2025'
+    ]
   },
 
-  // === Métricas económicas ===
+  // === Métricas económicas (DATOS REALES) ===
   metrics: {
     inflation: {
-      label: 'Inflación (anual)',
-      value: 48.5,
-      previous: 52.3,
+      label: 'Inflación (mensual)',
+      value: 3.4,
+      previous: 2.9,  // febrero 2026
       unit: '%',
-      change: -3.8,
-      trend: 'down', // down = bueno para inflación
+      change: 0.5,
+      trend: 'up', // subió respecto a febrero
       source: 'INDEC',
       date: '2026-03',
-      color: 'red'
+      color: 'red',
+      detail: 'IPC marzo 2026. Acumulada año: ~9.3%. Interanual estimada: ~42%.'
     },
     gdp: {
-      label: 'PIB (var. trimestral)',
-      value: 1.2,
-      previous: 0.8,
+      label: 'EMAE (var. interanual)',
+      value: -2.6,
+      previous: -2.1,  // estimación anterior
       unit: '%',
-      change: 0.4,
-      trend: 'up',
+      change: -0.5,
+      trend: 'down',
       source: 'INDEC',
-      date: '2026-Q1',
-      color: 'green'
+      date: '2026-02',
+      color: 'red',
+      detail: 'Estimador Mensual de Actividad Económica, febrero 2026. Caída interanual de 2.6%.'
     },
     risk: {
       label: 'Riesgo País',
-      value: 1250,
-      previous: 1380,
+      value: 535,
+      previous: 551,  // sept 2025
       unit: 'pbs',
-      change: -130,
+      change: -16,
       trend: 'down',
-      source: 'BCRA',
-      date: '2026-04-25',
-      color: 'yellow'
+      source: 'JP Morgan',
+      date: '2026-04-22',
+      color: 'yellow',
+      detail: '535 puntos básicos al 22/04/2026. Alta volatilidad reciente (rango: 534-600).'
     },
     poverty: {
       label: 'Pobreza',
-      value: 38.2,
-      previous: 40.1,
+      value: 26.9,
+      previous: 31.6,  // H1 2025
       unit: '%',
-      change: -1.9,
+      change: -4.7,
       trend: 'down',
-      source: 'INDEC',
-      date: '2025-H2',
-      color: 'purple'
+      source: 'INDEC / MCH',
+      date: '2025-T3',
+      color: 'green',
+      detail: 'Tercer trimestre 2025 (estimación Ministerio de Capital Humano). Último dato oficial INDEC semestral: 31.6% (H1 2025). Pico: 54.8% T1 2024.'
     }
   },
 
-  // === Actores políticos internos ===
+  // === Actores políticos internos (actualizado abril 2026) ===
   actors: [
-    { id: 'A1', name: 'Javier Milei', role: 'Presidente', party: 'La Libertad Avanza', utility: 0.82, faction: 'gobierno', alliances: ['A3', 'A5'], enemies: ['A2', 'A6'] },
-    { id: 'A2', name: 'Cristina Kirchner', role: 'VP (ex)', party: 'Frente de Todos', utility: 0.45, faction: 'oposicion', alliances: ['A4'], enemies: ['A1', 'A3'] },
-    { id: 'A3', name: 'Mauricio Macri', role: 'Ex presidente', party: 'PRO', utility: 0.68, faction: 'gobierno', alliances: ['A1', 'A5'], enemies: ['A2', 'A4'] },
-    { id: 'A4', name: 'Axel Kicillof', role: 'Gobernador Bs.As.', party: 'Frente de Todos', utility: 0.55, faction: 'oposicion', alliances: ['A2'], enemies: ['A1', 'A3'] },
-    { id: 'A5', name: 'Patricia Bullrich', role: 'Ministra Seguridad', party: 'PRO', utility: 0.72, faction: 'gobierno', alliances: ['A1', 'A3'], enemies: ['A2'] },
-    { id: 'A6', name: 'Sergio Massa', role: 'Ex ministro', party: 'Frente Renovador', utility: 0.38, faction: 'independiente', alliances: [], enemies: ['A1'] },
-    { id: 'A7', name: 'Gerardo Morales', role: 'Gobernador Jujuy', party: 'UCR', utility: 0.52, faction: 'independiente', alliances: ['A3'], enemies: [] },
-    { id: 'A8', name: 'Juan Schiaretti', role: 'Ex gobernador Córdoba', party: 'Hacemos', utility: 0.48, faction: 'independiente', alliances: [], enemies: [] }
+    { id: 'A1', name: 'Javier Milei', role: 'Presidente', party: 'La Libertad Avanza', utility: 0.78, faction: 'gobierno', alliances: ['A3', 'A5'], enemies: ['A2', 'A4'] },
+    { id: 'A2', name: 'Cristina Kirchner', role: 'Senadora / Ex VP', party: 'Fuerza Patria', utility: 0.35, faction: 'oposicion', alliances: ['A4', 'A6'], enemies: ['A1', 'A3'] },
+    { id: 'A3', name: 'Mauricio Macri', role: 'Ex presidente / Dir. PRO', party: 'PRO', utility: 0.72, faction: 'gobierno', alliances: ['A1', 'A5'], enemies: ['A2'] },
+    { id: 'A4', name: 'Axel Kicillof', role: 'Gobernador Bs.As.', party: 'Fuerza Patria', utility: 0.58, faction: 'oposicion', alliances: ['A2'], enemies: ['A1'] },
+    { id: 'A5', name: 'Patricia Bullrich', role: 'Ministra Seguridad / Senadora', party: 'PRO / LLA', utility: 0.80, faction: 'gobierno', alliances: ['A1', 'A3'], enemies: ['A2'] },
+    { id: 'A6', name: 'Sergio Massa', role: 'Ex candidato presidente', party: 'Fuerza Patria', utility: 0.30, faction: 'oposicion', alliances: ['A2'], enemies: ['A1'] },
+    { id: 'A7', name: 'Gerardo Morales', role: 'Senador / Ex gobernador Jujuy', party: 'UCR', utility: 0.55, faction: 'independiente', alliances: ['A3'], enemies: [] },
+    { id: 'A8', name: 'Martín Llaryora', role: 'Gobernador Córdoba', party: 'Provincias Unidas', utility: 0.62, faction: 'independiente', alliances: [], enemies: [] },
+    { id: 'A9', name: 'Maximiliano Pullaro', role: 'Gobernador Santa Fe', party: 'UCR', utility: 0.60, faction: 'independiente', alliances: ['A7'], enemies: [] },
+    { id: 'A10', name: 'Santiago Cafiero', role: 'Diputado', party: 'Fuerza Patria', utility: 0.42, faction: 'oposicion', alliances: ['A2', 'A6'], enemies: ['A1'] }
   ],
 
-  // === Congreso ===
+  // === Congreso (post-elecciones legislativas oct 2025, asumidos dic 2025) ===
+  // Fuente: senado.gob.ar (listado por bloques) + diputados.gov.ar + directoriolegislativo.org
   congress: {
     deputies: {
       total: 257,
       majority: 129,
       blocks: [
-        { name: 'La Libertad Avanza', seats: 39, color: '#8b5cf6' },
-        { name: 'Unión por la Patria', seats: 99, color: '#3b82f6' },
-        { name: 'PRO', seats: 37, color: '#f59e0b' },
-        { name: 'UCR', seats: 26, color: '#ef4444' },
-        { name: 'Hacemos', seats: 16, color: '#10b981' },
-        { name: 'Otros', seats: 40, color: '#6b7280' }
+        { name: 'La Libertad Avanza', seats: 64, color: '#8b5cf6', note: 'Segunda minoría, crecimiento post-elecciones 2025' },
+        { name: 'Fuerza Patria (UxP)', seats: 82, color: '#3b82f6', note: 'Primera minoría, incluye ex-FdT' },
+        { name: 'PRO', seats: 29, color: '#f59e0b', note: 'Aliado del oficialismo' },
+        { name: 'UCR', seats: 22, color: '#ef4444', note: 'Tercera fuerza' },
+        { name: 'Provincias Unidas', seats: 7, color: '#10b981', note: 'Bloque provincial surgido en 2025' },
+        { name: 'FIT-U', seats: 4, color: '#ec4899', note: 'Frente de Izquierda' },
+        { name: 'Otros / Independientes', seats: 49, color: '#6b7280', note: 'Bloques provinciales y menores' }
       ]
     },
     senators: {
       total: 72,
       majority: 37,
       blocks: [
-        { name: 'Unión por la Patria', seats: 33, color: '#3b82f6' },
-        { name: 'La Libertad Avanza', seats: 7, color: '#8b5cf6' },
-        { name: 'PRO', seats: 10, color: '#f59e0b' },
-        { name: 'UCR', seats: 9, color: '#ef4444' },
-        { name: 'Otros', seats: 13, color: '#6b7280' }
+        { name: 'Justicialista', seats: 21, color: '#3b82f6', note: 'Principal bloque opositor' },
+        { name: 'La Libertad Avanza', seats: 21, color: '#8b5cf6', note: 'Fuerte crecimiento (era 6 pre-2025)' },
+        { name: 'UCR', seats: 10, color: '#ef4444', note: 'Tercera fuerza' },
+        { name: 'Frente Pro', seats: 3, color: '#f59e0b', note: 'Aliado oficialismo' },
+        { name: 'Convicción Federal', seats: 3, color: '#06b6d4' },
+        { name: 'Frente Cívico Santiago', seats: 2, color: '#84cc16' },
+        { name: 'Frente Renovador Concordia', seats: 2, color: '#f97316' },
+        { name: 'Movere Santa Cruz', seats: 2, color: '#14b8a6' },
+        { name: 'Provincias Unidas', seats: 2, color: '#a855f7' },
+        { name: 'Justicia Social Federal', seats: 2, color: '#64748b' },
+        { name: 'Otros', seats: 4, color: '#9ca3af', note: 'Independencia, La Neuquinidad, Primero los Salteños, Despierta Chubut' }
       ]
     }
   },
 
-  // === Provincias ===
+  // === Provincias (gobernadores actuales abril 2026) ===
   provinces: [
-    { id: 'BA', name: 'Buenos Aires', governor: 'Axel Kicillof', party: 'Frente de Todos', alliance: 'oposicion', population: '17.5M' },
+    { id: 'BA', name: 'Buenos Aires', governor: 'Axel Kicillof', party: 'Fuerza Patria', alliance: 'oposicion', population: '17.5M' },
     { id: 'CF', name: 'CABA', governor: 'Jorge Macri', party: 'PRO', alliance: 'gobierno', population: '3.1M' },
-    { id: 'CC', name: 'Catamarca', governor: 'Raúl Jalil', party: 'Frente de Todos', alliance: 'oposicion', population: '430K' },
+    { id: 'CC', name: 'Catamarca', governor: 'Raúl Jalil', party: 'Fuerza Patria', alliance: 'oposicion', population: '430K' },
     { id: 'CH', name: 'Chaco', governor: 'Leandro Zdero', party: 'UCR', alliance: 'independiente', population: '1.2M' },
     { id: 'CT', name: 'Chubut', governor: 'Ignacio Torres', party: 'PRO', alliance: 'gobierno', population: '620K' },
     { id: 'ER', name: 'Entre Ríos', governor: 'Rogelio Frigerio', party: 'PRO', alliance: 'gobierno', population: '1.4M' },
-    { id: 'FO', name: 'Formosa', governor: 'Gildo Insfrán', party: 'Frente de Todos', alliance: 'oposicion', population: '600K' },
+    { id: 'FO', name: 'Formosa', governor: 'Gildo Insfrán', party: 'Fuerza Patria', alliance: 'oposicion', population: '600K' },
     { id: 'JY', name: 'Jujuy', governor: 'Carlos Sadir', party: 'PRO', alliance: 'gobierno', population: '800K' },
-    { id: 'LP', name: 'La Pampa', governor: 'Sergio Ziliotto', party: 'Frente de Todos', alliance: 'oposicion', population: '400K' },
-    { id: 'LR', name: 'La Rioja', governor: 'Quintela', party: 'Frente de Todos', alliance: 'oposicion', population: '390K' },
+    { id: 'LP', name: 'La Pampa', governor: 'Sergio Ziliotto', party: 'Fuerza Patria', alliance: 'oposicion', population: '400K' },
+    { id: 'LR', name: 'La Rioja', governor: 'Quintela', party: 'Fuerza Patria', alliance: 'oposicion', population: '390K' },
     { id: 'MZ', name: 'Mendoza', governor: 'Alfredo Cornejo', party: 'UCR', alliance: 'independiente', population: '2.1M' },
-    { id: 'MI', name: 'Misiones', governor: 'Hugo Passalacqua', party: 'Frente de Todos', alliance: 'oposicion', population: '1.3M' },
+    { id: 'MI', name: 'Misiones', governor: 'Hugo Passalacqua', party: 'Fuerza Patria', alliance: 'oposicion', population: '1.3M' },
     { id: 'NQ', name: 'Neuquén', governor: 'Rolando Figueroa', party: 'MPN', alliance: 'independiente', population: '720K' },
-    { id: 'RN', name: 'Río Negro', governor: 'Alberto Weretilneck', party: 'JSRN', alliance: 'independiente', population: '750K' },
-    { id: 'SA', name: 'Salta', governor: 'Gustavo Sáenz', party: 'Frente de Todos', alliance: 'oposicion', population: '1.5M' },
-    { id: 'SJ', name: 'San Juan', governor: 'Marcelo Orrego', party: 'Frente de Todos', alliance: 'oposicion', population: '800K' },
+    { id: 'RN', name: 'Río Negro', governor: 'Alberto Weretilleck', party: 'JSRN', alliance: 'independiente', population: '750K' },
+    { id: 'SA', name: 'Salta', governor: 'Gustavo Sáenz', party: 'Frente Salteño', alliance: 'independiente', population: '1.5M' },
+    { id: 'SJ', name: 'San Juan', governor: 'Marcelo Orrego', party: 'Fuerza Patria', alliance: 'oposicion', population: '800K' },
     { id: 'SL', name: 'San Luis', governor: 'Claudio Poggi', party: 'PRO', alliance: 'gobierno', population: '530K' },
-    { id: 'SC', name: 'Santa Cruz', governor: 'Claudio Vidal', party: 'Frente de Todos', alliance: 'oposicion', population: '390K' },
+    { id: 'SC', name: 'Santa Cruz', governor: 'Claudio Vidal', party: 'Fuerza Patria', alliance: 'oposicion', population: '390K' },
     { id: 'SF', name: 'Santa Fe', governor: 'Maximiliano Pullaro', party: 'UCR', alliance: 'independiente', population: '3.5M' },
-    { id: 'SE', name: 'Santiago del Estero', governor: 'Gerardo Zamora', party: 'Frente de Todos', alliance: 'oposicion', population: '1.1M' },
-    { id: 'TF', name: 'Tierra del Fuego', governor: 'Gustavo Melella', party: 'Frente de Todos', alliance: 'oposicion', population: '190K' },
-    { id: 'TU', name: 'Tucumán', governor: 'Osvaldo Jaldo', party: 'Frente de Todos', alliance: 'oposicion', population: '1.8M' },
-    { id: 'CB', name: 'Córdoba', governor: 'Martín Llaryora', party: 'Hacemos', alliance: 'independiente', population: '3.8M' },
+    { id: 'SE', name: 'Santiago del Estero', governor: 'Gerardo Zamora', party: 'FCSdE', alliance: 'independiente', population: '1.1M' },
+    { id: 'TF', name: 'Tierra del Fuego', governor: 'Gustavo Melella', party: 'Fuerza Patria', alliance: 'oposicion', population: '190K' },
+    { id: 'TU', name: 'Tucumán', governor: 'Osvaldo Jaldo', party: 'Fuerza Patria', alliance: 'oposicion', population: '1.8M' },
+    { id: 'CB', name: 'Córdoba', governor: 'Martín Llaryora', party: 'Provincias Unidas', alliance: 'independiente', population: '3.8M' },
     { id: 'COR', name: 'Corrientes', governor: 'Gustavo Valdés', party: 'UCR', alliance: 'independiente', population: '1.2M' }
   ],
 
@@ -249,18 +280,20 @@ const NASH_DATA = {
     }
   ],
 
-  // === Alianzas ===
+  // === Alianzas (abril 2026) ===
   alliances: [
-    { a: 'Javier Milei', b: 'Mauricio Macri', type: 'solid', since: '2024', description: 'Coalición de gobierno' },
-    { a: 'Javier Milei', b: 'Patricia Bullrich', type: 'solid', since: '2024', description: 'Alianza en seguridad' },
-    { a: 'Mauricio Macri', b: 'Patricia Bullrich', type: 'solid', since: '2019', description: 'PRO - liderazgo compartido' },
-    { a: 'Cristina Kirchner', b: 'Axel Kicillof', type: 'solid', since: '2019', description: 'Frente de Todos - Buenos Aires' },
-    { a: 'Gerardo Morales', b: 'Mauricio Macri', type: 'weak', since: '2023', description: 'UCR-PRO tensión por reformas' },
-    { a: 'Juan Schiaretti', b: 'Axel Kicillof', type: 'weak', since: '2025', description: 'Hacemos-FdT acuerdo parcial' },
-    { a: 'Sergio Massa', b: 'Javier Milei', type: 'broken', since: '2023', description: 'Ex oponentes presidenciales' },
-    { a: 'Cristina Kirchner', b: 'Javier Milei', type: 'broken', since: '2024', description: 'Oposición frontal' },
-    { a: 'Sergio Massa', b: 'Cristina Kirchner', type: 'weak', since: '2023', description: 'Tensión post-elecciones' },
-    { a: 'Gerardo Morales', b: 'Axel Kicillof', type: 'weak', since: '2025', description: 'Acuerdo fiscal provincial' }
+    { a: 'Javier Milei', b: 'Mauricio Macri', type: 'solid', since: '2024', description: 'Coalición de gobierno LLA-PRO. Base legislativa conjunta.' },
+    { a: 'Javier Milei', b: 'Patricia Bullrich', type: 'solid', since: '2024', description: 'Bullrich pasó de PRO a LLA. Ministra de Seguridad y senadora.' },
+    { a: 'Mauricio Macri', b: 'Patricia Bullrich', type: 'solid', since: '2015', description: 'PRO — liderazgo compartido, ahora en coalición con LLA.' },
+    { a: 'Cristina Kirchner', b: 'Axel Kicillof', type: 'solid', since: '2019', description: 'Fuerza Patria — Buenos Aires. CFK senadora, Kicillof gobernador.' },
+    { a: 'Cristina Kirchner', b: 'Sergio Massa', type: 'solid', since: '2023', description: 'Fuerza Patria — unidad opositora post-elecciones 2023.' },
+    { a: 'Cristina Kirchner', b: 'Santiago Cafiero', type: 'solid', since: '2019', description: 'Fuerza Patria — dirigencia partidaria.' },
+    { a: 'Gerardo Morales', b: 'Mauricio Macri', type: 'weak', since: '2023', description: 'UCR-PRO tensión por reformas y autonomía radical.' },
+    { a: 'Martín Llaryora', b: 'Axel Kicillof', type: 'weak', since: '2025', description: 'Provincias Unidas — acuerdo fiscal provincial sin alianza formal.' },
+    { a: 'Maximiliano Pullaro', b: 'Gerardo Morales', type: 'weak', since: '2025', description: 'UCR — liderazgos provinciales con visiones distintas.' },
+    { a: 'Sergio Massa', b: 'Javier Milei', type: 'broken', since: '2023', description: 'Ex oponentes presidenciales. Sin diálogo.' },
+    { a: 'Cristina Kirchner', b: 'Javier Milei', type: 'broken', since: '2024', description: 'Oposición frontal. CFK critica duramente al gobierno.' },
+    { a: 'Sergio Massa', b: 'Cristina Kirchner', type: 'weak', since: '2024', description: 'Tensión interna en Fuerza Patria por liderazgo.' }
   ],
 
   // === Actores en la sombra ===

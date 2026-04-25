@@ -371,14 +371,28 @@ class NashDashboard {
 
     const metrics = Object.values(this.data.metrics);
     grid.innerHTML = metrics.map(m => {
-      const changeClass = m.trend === 'down' && m.color === 'red' ? 'positive' :
-                          m.trend === 'up' && m.color === 'green' ? 'positive' :
-                          m.trend === 'down' ? 'positive' : 'negative';
+      // For inflation: up = bad (red), down = good (green)
+      // For GDP/EMAE: up = good (green), down = bad (red)
+      // For risk: down = good (green), up = bad (red)
+      // For poverty: down = good (green), up = bad (red)
+      let changeClass;
+      if (m.label.includes('Inflación')) {
+        changeClass = m.change > 0 ? 'negative' : 'positive';
+      } else if (m.label.includes('EMAE') || m.label.includes('PIB')) {
+        changeClass = m.change > 0 ? 'positive' : 'negative';
+      } else if (m.label.includes('Riesgo')) {
+        changeClass = m.change > 0 ? 'negative' : 'positive';
+      } else if (m.label.includes('Pobreza')) {
+        changeClass = m.change > 0 ? 'negative' : 'positive';
+      } else {
+        changeClass = m.trend === 'down' ? 'positive' : 'negative';
+      }
+
       const changeSign = m.change > 0 ? '+' : '';
       const arrow = m.change > 0 ? '↑' : m.change < 0 ? '↓' : '→';
 
       return `
-        <div class="metric-card" tabindex="0" aria-label="${m.label}: ${m.value}${m.unit}">
+        <div class="metric-card" tabindex="0" aria-label="${m.label}: ${m.value}${m.unit}" data-tooltip="${m.detail || ''}">
           <div class="metric-label">${m.label}</div>
           <div class="metric-value" style="color: var(--accent-${m.color})">
             ${typeof m.value === 'number' ? m.value.toLocaleString('es-AR') : m.value}${m.unit}
@@ -638,8 +652,10 @@ class NashDashboard {
   // === Timestamp ===
   updateTimestamp() {
     const el = document.getElementById('update-time');
+    el.setAttribute('datetime', this.data.meta.lastUpdate);
     if (el) {
-      el.textContent = this.data.meta.lastUpdate;
+      const [y, m, d] = this.data.meta.lastUpdate.split('-');
+      el.textContent = `${d}/${m}/${y}`;
     }
   }
 }
