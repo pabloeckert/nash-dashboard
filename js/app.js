@@ -4,8 +4,12 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const app = new NashDashboard();
-  app.init();
+  try {
+    const app = new NashDashboard();
+    app.init();
+  } catch (err) {
+    console.error('Dashboard init error:', err);
+  }
 });
 
 class NashDashboard {
@@ -27,26 +31,21 @@ class NashDashboard {
     this.setupKeyboardNav();
     this.buildSearchIndex();
 
-    // Render static data first
-    this.renderMetrics();
-    this.renderNetwork();
-    this.renderAlliances();
-    this.renderScenarios();
-    this.renderCongress();
-    this.renderProvinces();
-    this.renderActors();
-    this.renderShadows();
-    this.renderInternational();
-    this.updateTimestamp();
+    // Render static data (each wrapped to prevent one failure from blocking others)
+    const render = (fn) => { try { fn(); } catch(e) { console.error(fn.name, e); } };
+    render(() => this.renderMetrics());
+    render(() => this.renderNetwork());
+    render(() => this.renderAlliances());
+    render(() => this.renderScenarios());
+    render(() => this.renderCongress());
+    render(() => this.renderProvinces());
+    render(() => this.renderActors());
+    render(() => this.renderShadows());
+    render(() => this.renderInternational());
+    render(() => this.updateTimestamp());
 
-    // Fetch live data
-    await this.fetchLiveData();
-
-    // Render command center components
-    this.renderDollarPanel();
-    this.renderAlerts();
-    this.renderDecisionMatrix();
-    this.renderDataFreshness();
+    // Fetch live data (non-blocking)
+    this.fetchLiveData();
 
     // Auto-refresh every 2 minutes
     this.refreshInterval = setInterval(() => this.fetchLiveData(), 120000);
@@ -54,13 +53,21 @@ class NashDashboard {
 
   // === Live Data ===
   async fetchLiveData() {
-    this.updateFreshnessIndicator('loading');
-    const data = await this.liveData.fetchAll();
-    this.renderDollarPanel();
-    this.renderAlerts();
-    this.renderDecisionMatrix();
-    this.renderDataFreshness();
-    this.updateFreshnessIndicator(this.liveData.getDataFreshness());
+    try {
+      this.updateFreshnessIndicator('loading');
+      await this.liveData.fetchAll();
+      this.renderDollarPanel();
+      this.renderAlerts();
+      this.renderDecisionMatrix();
+      this.renderDataFreshness();
+      this.updateFreshnessIndicator(this.liveData.getDataFreshness());
+    } catch (err) {
+      console.warn('Live data fetch failed:', err);
+      this.updateFreshnessIndicator('error');
+      // Still render with static data
+      this.renderAlerts();
+      this.renderDecisionMatrix();
+    }
   }
 
   updateFreshnessIndicator(status) {
@@ -542,8 +549,8 @@ class NashDashboard {
     const container = document.getElementById('network-graph');
     if (!container) return;
 
-    const width = container.offsetWidth;
-    const height = container.offsetHeight;
+    const width = container.offsetWidth || 400;
+    const height = container.offsetHeight || 280;
     const actors = this.data.actors;
     const cx = width / 2, cy = height / 2;
     const radius = Math.min(width, height) * 0.35;
