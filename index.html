@@ -102,6 +102,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="#" class="nav-link" role="menuitem" data-section="command">
+                        <span class="nav-icon">🎯</span>
+                        <span class="nav-text">Comando</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link" role="menuitem" data-section="actores">
                         <span class="nav-icon">🗺️</span>
                         <span class="nav-text">Actores</span>
@@ -148,6 +154,61 @@
 
         <!-- Main Content -->
         <main class="main" role="main">
+
+            <!-- ===== COMMAND CENTER ===== -->
+            <section id="command" class="section" aria-label="Centro de Comando Ejecutivo">
+                <div class="section-header">
+                    <h1 class="section-title">🎯 Centro de Comando</h1>
+                    <p class="section-subtitle">Datos en tiempo real, alertas y soporte de decisión</p>
+                </div>
+
+                <!-- Dollar Panel -->
+                <div class="module" style="margin-bottom: var(--space-6);">
+                    <div class="module-header">
+                        <span class="module-title">💵 Cotizaciones en Tiempo Real</span>
+                        <span id="live-status" class="module-badge" style="font-size:0.6875rem">🟡 Cargando...</span>
+                    </div>
+                    <div class="module-body">
+                        <div id="dollar-panel">
+                            <div class="dollar-grid">
+                                <div class="dollar-card"><div class="skeleton" style="height:80px"></div></div>
+                                <div class="dollar-card"><div class="skeleton" style="height:80px"></div></div>
+                                <div class="dollar-card"><div class="skeleton" style="height:80px"></div></div>
+                                <div class="dollar-card"><div class="skeleton" style="height:80px"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts -->
+                <div class="module" style="margin-bottom: var(--space-6);">
+                    <div class="module-header">
+                        <span class="module-title">🔔 Alertas y Riesgos</span>
+                        <span class="module-badge">Activas</span>
+                    </div>
+                    <div class="module-body">
+                        <div id="alerts-panel">
+                            <div class="skeleton" style="height:100px"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decision Matrix -->
+                <div class="module" style="margin-bottom: var(--space-6);">
+                    <div class="module-header">
+                        <span class="module-title">🧠 Matriz de Decisión</span>
+                        <span class="module-badge">6 escenarios</span>
+                    </div>
+                    <div class="module-body">
+                        <div id="decision-matrix" class="decision-grid">
+                            <div class="skeleton" style="height:200px"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Freshness -->
+                <div id="data-freshness" class="data-freshness-bar"></div>
+            </section>
 
             <!-- ===== DASHBOARD ===== -->
             <section id="dashboard" class="section active" aria-label="Dashboard principal">
@@ -304,6 +365,7 @@
     </div>
 
     <script src="js/data.js"></script>
+    <script src="js/livedata.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
