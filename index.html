@@ -1,82 +1,144 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'self';">
     <title>Tablero Nash — Argentina: Poder, Alianzas y Escenarios</title>
-    <meta name="description" content="Dashboard interactivo de análisis político argentino mediante teoría de juegos de Nash.">
+    <meta name="description" content="Dashboard interactivo de análisis político argentino mediante teoría de juegos de Nash. Métricas económicas, mapa de actores, escenarios Nash, Congreso, provincias y más.">
+    <meta name="keywords" content="política argentina, teoría de juegos, Nash, dashboard, análisis político, Milei, Congreso, provincias, alianzas">
+    <meta name="author" content="Pablo Eckert">
+    <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0a0e17">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Tablero Nash — Argentina: Poder, Alianzas y Escenarios">
+    <meta property="og:description" content="Dashboard interactivo de análisis político argentino mediante teoría de juegos de Nash.">
+    <meta property="og:url" content="https://pabloeckert.github.io/nash-dashboard">
+    <meta property="og:site_name" content="Tablero Nash">
+    <meta property="og:locale" content="es_AR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tablero Nash — Argentina: Poder, Alianzas y Escenarios">
+    <meta name="twitter:description" content="Dashboard interactivo de análisis político argentino mediante teoría de juegos de Nash.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://pabloeckert.github.io/nash-dashboard">
+
+    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Fonts with SRI -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Favicon (inline SVG) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Tablero Nash",
+        "description": "Dashboard interactivo de análisis político argentino mediante teoría de juegos de Nash",
+        "url": "https://pabloeckert.github.io/nash-dashboard",
+        "applicationCategory": "DataVisualizationApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "es",
+        "author": {
+            "@type": "Person",
+            "name": "Pablo Eckert"
+        },
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
 </head>
 <body>
+    <!-- Skip to content (accessibility) -->
+    <a href="#dashboard" class="skip-link">Saltar al contenido principal</a>
+
     <div class="app">
         <!-- Header -->
-        <header class="header">
+        <header class="header" role="banner">
             <div class="header-left">
                 <div class="logo">
                     🎯 <span class="accent">Tablero Nash</span>
                 </div>
-                <span class="status-badge">
-                    <span class="status-dot"></span>
+                <span class="status-badge" aria-label="Estado del dashboard: activo">
+                    <span class="status-dot" aria-hidden="true"></span>
                     Activo
                 </span>
             </div>
             <div class="header-right">
-                <span>Actualizado: <span id="update-time" class="update-time">2026-04-25</span></span>
+                <div class="search-container">
+                    <input type="search" id="search-input" class="search-input" placeholder="Buscar actor, provincia, escenario..." aria-label="Buscar en el dashboard" autocomplete="off">
+                    <div id="search-results" class="search-results" role="listbox" hidden></div>
+                </div>
+                <span class="update-time-header">
+                    📅 <time id="update-time" datetime="2026-04-25">25/04/2026</time>
+                </span>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
             </div>
         </header>
 
         <!-- Navigation -->
-        <nav class="nav">
-            <ul class="nav-list">
+        <nav class="nav" role="navigation" aria-label="Navegación principal">
+            <ul class="nav-list" role="menubar">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" data-section="dashboard">
+                    <a href="#" class="nav-link active" role="menuitem" data-section="dashboard">
                         <span class="nav-icon">📊</span>
                         <span class="nav-text">Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="actores">
+                    <a href="#" class="nav-link" role="menuitem" data-section="actores">
                         <span class="nav-icon">🗺️</span>
                         <span class="nav-text">Actores</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="congreso">
+                    <a href="#" class="nav-link" role="menuitem" data-section="congreso">
                         <span class="nav-icon">🏛️</span>
                         <span class="nav-text">Congreso</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="provincias">
+                    <a href="#" class="nav-link" role="menuitem" data-section="provincias">
                         <span class="nav-icon">🗺️</span>
                         <span class="nav-text">Provincias</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="alianzas">
+                    <a href="#" class="nav-link" role="menuitem" data-section="alianzas">
                         <span class="nav-icon">🤝</span>
                         <span class="nav-text">Alianzas</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="nash">
+                    <a href="#" class="nav-link" role="menuitem" data-section="nash">
                         <span class="nav-icon">🎲</span>
                         <span class="nav-text">Escenarios Nash</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="sombras">
+                    <a href="#" class="nav-link" role="menuitem" data-section="sombras">
                         <span class="nav-icon">👥</span>
                         <span class="nav-text">Sombras</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="internacional">
+                    <a href="#" class="nav-link" role="menuitem" data-section="internacional">
                         <span class="nav-icon">🌐</span>
                         <span class="nav-text">Internacional</span>
                     </a>
@@ -85,10 +147,10 @@
         </nav>
 
         <!-- Main Content -->
-        <main class="main">
+        <main class="main" role="main">
 
             <!-- ===== DASHBOARD ===== -->
-            <section id="dashboard" class="section active">
+            <section id="dashboard" class="section active" aria-label="Dashboard principal">
                 <div class="section-header">
                     <h1 class="section-title">Dashboard</h1>
                     <p class="section-subtitle">Métricas clave del panorama político y económico argentino</p>
@@ -132,7 +194,7 @@
             </section>
 
             <!-- ===== ACTORES ===== -->
-            <section id="actores" class="section">
+            <section id="actores" class="section" aria-label="Mapa de actores políticos">
                 <div class="section-header">
                     <h1 class="section-title">Mapa de Actores</h1>
                     <p class="section-subtitle">Actores internos con alianzas, enemigos y funciones de utilidad</p>
@@ -147,7 +209,7 @@
             </section>
 
             <!-- ===== CONGRESO ===== -->
-            <section id="congreso" class="section">
+            <section id="congreso" class="section" aria-label="Análisis del Congreso">
                 <div class="section-header">
                     <h1 class="section-title">Análisis del Congreso</h1>
                     <p class="section-subtitle">Composición de Diputados y Senadores por bloque</p>
@@ -165,7 +227,7 @@
             </section>
 
             <!-- ===== PROVINCIAS ===== -->
-            <section id="provincias" class="section">
+            <section id="provincias" class="section" aria-label="Mapa provincial">
                 <div class="section-header">
                     <h1 class="section-title">Mapa Provincial</h1>
                     <p class="section-subtitle">24 provincias y la alianza política de sus gobernadores</p>
@@ -180,7 +242,7 @@
             </section>
 
             <!-- ===== ALIANZAS ===== -->
-            <section id="alianzas" class="section">
+            <section id="alianzas" class="section" aria-label="Mapa de alianzas">
                 <div class="section-header">
                     <h1 class="section-title">Mapa de Alianzas</h1>
                     <p class="section-subtitle">Relaciones entre actores: sólidas, débiles y rotas</p>
@@ -199,7 +261,7 @@
             </section>
 
             <!-- ===== ESCENARIOS NASH ===== -->
-            <section id="nash" class="section">
+            <section id="nash" class="section" aria-label="Escenarios Nash">
                 <div class="section-header">
                     <h1 class="section-title">Escenarios Nash</h1>
                     <p class="section-subtitle">Modelado estratégico con matrices de pagos y equilibrios</p>
@@ -208,7 +270,7 @@
             </section>
 
             <!-- ===== ACTORES EN LA SOMBRA ===== -->
-            <section id="sombras" class="section">
+            <section id="sombras" class="section" aria-label="Actores en la sombra">
                 <div class="section-header">
                     <h1 class="section-title">Actores en la Sombra</h1>
                     <p class="section-subtitle">Judiciales, empresarios, sindicatos y poder blando</p>
@@ -217,7 +279,7 @@
             </section>
 
             <!-- ===== INTERNACIONAL ===== -->
-            <section id="internacional" class="section">
+            <section id="internacional" class="section" aria-label="Política internacional">
                 <div class="section-header">
                     <h1 class="section-title">Política Internacional</h1>
                     <p class="section-subtitle">12 bloques y su relación con Argentina</p>
@@ -228,14 +290,15 @@
         </main>
 
         <!-- Footer -->
-        <footer class="footer">
-            <div>
-                Análisis propio basado en fuentes públicas · Los escenarios Nash son modelos teóricos y no predicciones
+        <footer class="footer" role="contentinfo">
+            <div class="footer-disclaimer">
+                Análisis propio basado en fuentes públicas (INDEC, BCRA, Congreso). Los escenarios Nash son modelos teóricos y no predicciones.
             </div>
             <div class="footer-links">
-                <a href="https://github.com/pabloeckert/nash-dashboard" target="_blank">GitHub</a>
-                <span>MIT License</span>
+                <a href="https://github.com/pabloeckert/nash-dashboard" target="_blank" rel="noopener noreferrer" aria-label="Ver código fuente en GitHub">GitHub</a>
+                <a href="https://github.com/pabloeckert/nash-dashboard/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a>
                 <span>v1.0.0</span>
+                <span>Hecho en Argentina 🇦🇷</span>
             </div>
         </footer>
     </div>
