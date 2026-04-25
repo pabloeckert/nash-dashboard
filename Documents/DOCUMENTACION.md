@@ -27,6 +27,7 @@ nash-dashboard/
 ├── styles.css              ← Tema profesional light (~16KB)
 ├── manifest.json           ← PWA manifest
 ├── sw.js                   ← Service Worker (cache offline)
+├── .nojekyll              ← Bypass Jekyll en GitHub Pages
 ├── .github/workflows/
 │   └── pages.yml           ← GitHub Actions deploy
 ├── Documents/
@@ -274,7 +275,45 @@ Ver `Documents/FUENTES.md` para detalle completo.
 
 ---
 
+## 8. Troubleshooting — GitHub Pages
+
+### Problema: 404 persistente después de deploy
+
+**Causa:** GitHub Pages procesa con Jekyll por defecto. Jekyll puede ignorar archivos con `_` prefijo, procesar Markdown, o fallar con sitios estáticos vanilla.
+
+**Fix:** Agregar archivo `.nojekyll` en la raíz del repo. Esto le dice a Pages que sirva los archivos tal cual.
+
+**Causa adicional:** CDN cache de GitHub Pages. El browser puede tener cacheada una respuesta 404 de un edge diferente.
+
+**Fix:** Hard refresh (`Ctrl+Shift+R` / `Cmd+Shift+R`) o ventana incógnito. Esperar 5-10 minutos para propagación completa del CDN.
+
+### Verificación del deploy
+
+```bash
+# Verificar que el servidor devuelve el contenido correcto
+curl -sI "https://pabloeckert.github.io/nash-dashboard/" | head -5
+# Debe retornar HTTP/2 200
+
+# Verificar contenido
+curl -s "https://pabloeckert.github.io/nash-dashboard/" | grep "v3.0"
+# Debe encontrar "v3.0"
+```
+
+### Workflow de deploy
+
+El deploy se hace via GitHub Actions (`.github/workflows/pages.yml`):
+- Trigger: push a `main`
+- Sube el contenido como artifact
+- Deploy al environment `github-pages`
+- El build_type debe ser `workflow` (no `legacy`)
+
+---
+
 ## 7. Registro de Actualizaciones
+
+### v3.0.1 — 25/04/2026
+- [x] Agregado `.nojekyll` para bypass de Jekyll en GitHub Pages
+- [x] Documentado problema de cache CDN
 
 ### v3.0 — 25/04/2026 (Actualización mayor)
 - [x] Panel **🧠 Pensamiento IA** — consenso de 5 modelos de IA

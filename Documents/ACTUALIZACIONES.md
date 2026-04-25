@@ -4,6 +4,14 @@
 
 ---
 
+## v3.0.1 — 25/04/2026
+
+### Corregidos
+- **GitHub Pages 404 persistente** — Agregado `.nojekyll` para bypass de procesamiento Jekyll. GitHub Pages procesa con Jekyll por defecto y puede romper el deploy de sitios estáticos vanilla.
+- **CDN cache** — Problema de propagación del CDN de GitHub Pages documentado. Hard refresh (Ctrl+Shift+R) o incógnito resuelve.
+
+---
+
 ## v3.0 — 25/04/2026
 
 ### Nuevos — Paneles

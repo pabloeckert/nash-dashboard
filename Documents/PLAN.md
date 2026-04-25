@@ -50,6 +50,8 @@ El dashboard tiene **14 paneles** funcionales con:
 - [x] Commit + push a main (82b9e31)
 - [x] GitHub Actions deploy automático
 - [x] GitHub Pages activo
+- [x] Fix `.nojekyll` para bypass Jekyll (8bdfdb8)
+- [x] Verificación: curl confirma v3.0 sirviendo correctamente
 
 ## Etapa 5: Futuro — Q2-Q3 2026
 
