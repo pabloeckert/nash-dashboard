@@ -12,7 +12,9 @@
 - **Plan:** 8 fases en `Documents/PLAN-ETAPAS.md`
 - **RACI:** Matriz de responsabilidades en `Documents/RACI.md`
 
-## Pendientes
-- Configurar git remote para push
+## Repositorio
+- **Remote:** `github.com/pabloeckert/nash-dashboard`
+- **Branch:** `master`
+- **Estado:** Configurado y funcionando
 - Identificar el proyecto específico
 - Bootstrap del workspace (IDENTITY.md, USER.md sin completar)
