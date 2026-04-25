@@ -394,9 +394,10 @@ const FEED_ITEMS = [
 
 function showPanel(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
   document.getElementById('panel-' + id).classList.add('active');
   btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
 }
 
 function togglePlayer(el) {
@@ -508,15 +509,15 @@ function renderReligion() {
   let html = '<div class="grid-2"><div class="col-stack">';
 
   // Evangélicos
-  html += `<div class="card"><h3 class="card-header">${r.evangélical.title}</h3>`;
-  html += `<p class="body-text"><strong>Peso electoral:</strong> ${r.evangélical.weight}. Alta concentración en ${r.evangélical.regions}.</p>`;
+  html += `<div class="card"><h3 class="card-header">${r.evangelical.title}</h3>`;
+  html += `<p class="body-text"><strong>Peso electoral:</strong> ${r.evangelical.weight}. Alta concentración en ${r.evangelical.regions}.</p>`;
   html += `<p class="body-text"><strong>Referentes:</strong></p>`;
-  r.evangélical.references.forEach(ref => {
+  r.evangelical.references.forEach(ref => {
     html += `<p class="body-text" style="padding-left:12px;border-left:2px solid var(--border-light)"><strong>${ref.name}</strong> (${ref.role}): ${ref.note}</p>`;
   });
-  html += `<p class="body-text"><strong>Tensión emergente:</strong> ${r.evangélical.tension}</p>`;
+  html += `<p class="body-text"><strong>Tensión emergente:</strong> ${r.evangelical.tension}</p>`;
   html += `<div class="alliance-grid">`;
-  r.evangélical.alliances.forEach(([label, type]) => {
+  r.evangelical.alliances.forEach(([label, type]) => {
     html += `<span class="tag tag-${type}">${label}</span>`;
   });
   html += `</div></div>`;

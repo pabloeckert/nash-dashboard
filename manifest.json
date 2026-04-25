@@ -1,0 +1,19 @@
+{
+  "name": "Tablero Nash — Argentina",
+  "short_name": "Tablero Nash",
+  "description": "Análisis estratégico de la política argentina mediante teoría de juegos de Nash",
+  "start_url": "/nash-dashboard/",
+  "scope": "/nash-dashboard/",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#2563eb",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%232563eb' width='512' height='512' rx='96'/><text x='256' y='340' font-size='280' font-weight='700' fill='white' text-anchor='middle' font-family='monospace'>N</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

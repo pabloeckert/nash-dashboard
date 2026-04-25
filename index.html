@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tablero Nash — Argentina: Poder, Alianzas y Escenarios</title>
 <meta name="description" content="Análisis estratégico de la política argentina mediante teoría de juegos de Nash. Mapa de poder, alianzas, escenarios y actores internos.">
+<meta property="og:title" content="Tablero Nash — Argentina: Poder, Alianzas y Escenarios">
+<meta property="og:description" content="Dashboard político interactivo con teoría de juegos de Nash. Métricas en tiempo real, mapa de actores, escenarios y alianzas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pabloeckert.github.io/nash-dashboard/">
+<meta property="og:image" content="https://pabloeckert.github.io/nash-dashboard/og-image.png">
+<meta property="og:locale" content="es_AR">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232563eb' width='100' height='100' rx='20'/><text x='50' y='68' font-size='60' font-weight='700' fill='white' text-anchor='middle' font-family='monospace'>N</text></svg>">
+<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -42,16 +50,16 @@
 <!-- Navigation -->
 <nav class="nav">
   <div class="nav-inner">
-    <button class="nav-btn active" onclick="showPanel('dashboard',this)">Dashboard</button>
-    <button class="nav-btn" onclick="showPanel('actores',this)">Actores</button>
-    <button class="nav-btn" onclick="showPanel('congreso',this)">Congreso</button>
-    <button class="nav-btn" onclick="showPanel('provincias',this)">Provincias</button>
-    <button class="nav-btn" onclick="showPanel('alianzas',this)">Alianzas</button>
-    <button class="nav-btn" onclick="showPanel('sombra',this)">En la sombra</button>
-    <button class="nav-btn" onclick="showPanel('religion',this)">Religión</button>
-    <button class="nav-btn" onclick="showPanel('internacional',this)">Internacional</button>
-    <button class="nav-btn" onclick="showPanel('escenarios',this)">Escenarios Nash</button>
-    <button class="nav-btn" onclick="showPanel('feed',this)">Fuentes</button>
+    <button class="nav-btn active" onclick="showPanel('dashboard',this)" aria-label="Ver panel Dashboard" role="tab" aria-selected="true">Dashboard</button>
+    <button class="nav-btn" onclick="showPanel('actores',this)" aria-label="Ver panel Actores" role="tab" aria-selected="false">Actores</button>
+    <button class="nav-btn" onclick="showPanel('congreso',this)" aria-label="Ver panel Congreso" role="tab" aria-selected="false">Congreso</button>
+    <button class="nav-btn" onclick="showPanel('provincias',this)" aria-label="Ver panel Provincias" role="tab" aria-selected="false">Provincias</button>
+    <button class="nav-btn" onclick="showPanel('alianzas',this)" aria-label="Ver panel Alianzas" role="tab" aria-selected="false">Alianzas</button>
+    <button class="nav-btn" onclick="showPanel('sombra',this)" aria-label="Ver panel En la sombra" role="tab" aria-selected="false">En la sombra</button>
+    <button class="nav-btn" onclick="showPanel('religion',this)" aria-label="Ver panel Religión" role="tab" aria-selected="false">Religión</button>
+    <button class="nav-btn" onclick="showPanel('internacional',this)" aria-label="Ver panel Internacional" role="tab" aria-selected="false">Internacional</button>
+    <button class="nav-btn" onclick="showPanel('escenarios',this)" aria-label="Ver panel Escenarios Nash" role="tab" aria-selected="false">Escenarios Nash</button>
+    <button class="nav-btn" onclick="showPanel('feed',this)" aria-label="Ver panel Fuentes" role="tab" aria-selected="false">Fuentes</button>
   </div>
 </nav>
 
@@ -282,5 +290,10 @@
 </main>
 
 <script src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/nash-dashboard/sw.js').catch(() => {});
+}
+</script>
 </body>
 </html>
