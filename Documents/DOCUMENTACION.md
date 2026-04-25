@@ -11,7 +11,7 @@
 | **Proyecto** | nash-dashboard |
 | **Repositorio** | https://github.com/pabloeckert/nash-dashboard |
 | **Fecha inicio** | 2026-04-25 |
-| **Última actualización** | 2026-04-25 21:20 CST |
+| **Última actualización** | 2026-04-25 21:38 CST |
 | **Estado** | 🟢 En producción — v1.0.0 |
 | **Responsable documentación** | AI Assistant |
 | **Branch principal** | master |
@@ -240,6 +240,7 @@ _(Pendiente: Customer Success + Technical Support + RevOps)_
 | 2026-04-25 21:16 | AI Assistant | Continuación Fase 0: creado PRODUCT-VISION.md (north star metrics, MVP features, roadmap), SECURITY-BASELINE.md (10 amenazas, controles), COMPLIANCE-CHECKLIST.md (6 categorías regulatorias), RISK-REGISTER.md (10 riesgos), BACKLOG.md (28 historias, 159 SP). CI/CD con GitHub Actions para deploy a GitHub Pages. index.html placeholder con dark theme y CSP. 8 ADRs nuevos (ADR-006 a ADR-013). |
 | 2026-04-25 21:20 | AI Assistant | **Ejecución completa de todas las fases (Fase 0→7).** Fase 1: RESEARCH-REPORT.md (8 competidores, 6 segmentos), USER-PERSONAS.md (4 personas). Fase 2: DESIGN-SYSTEM.md (paleta, tipografía, componentes), WIREFRAMES.md (5 pantallas, 3 flujos), TEST-STRATEGY.md (8 niveles, 43 test cases), CONTENT-STYLE-GUIDE.md (tono, microcopy, fuentes), I18N-STRATEGY.md, THREAT-MODEL.md (STRIDE, 16 amenazas). Fase 3: Dashboard funcional completo con 8 secciones (dashboard, actores, congreso, provincias, alianzas, escenarios Nash, sombras, internacional). CSS (500+ líneas design system), JS (data + app logic). Fase 5: RELEASE-NOTES.md v1.0.0, GTM-PLAN.md (thread, calendario), RUNBOOK.md. Fase 6: GROWTH-PLAYBOOK.md. Fase 7: EXECUTIVE-DASHBOARD.md. Total: 22 documentos, 3 archivos de código (HTML+CSS+JS), pipeline CI/CD. |
 | 2026-04-25 21:33 | AI Assistant | **Mejoras v1.1 aplicadas.** Seguridad: CSP ampliado. SEO: Open Graph, Twitter Card, JSON-LD, canonical, keywords. Accesibilidad: skip-link, ARIA roles, focus visible, reduced motion, high contrast, keyboard nav (← →, Ctrl+K, /). UX: Búsqueda global con debounce y highlight, tema claro/oscuro con localStorage, filtros funcionales (actores/provincias/alianzas), back-to-top, print styles. Código: render dual para alianzas y escenarios. |
+| 2026-04-25 21:38 | AI Assistant | **Datos reales verificados con múltiples fuentes.** Inflación: 3.4% mensual marzo 2026 (INDEC IPC). EMAE: -2.6% interanual feb 2026 (INDEC). Riesgo País: 535 pbs al 22/04/2026 (JP Morgan vía Perfil.com). Pobreza: 26.9% T3 2025 (INDEC/MCH), pico 54.8% T1 2024. Congreso: actualizado post-elecciones oct 2025 — Diputados LLA 64, Fuerza Patria 82; Senado LLA 21, Justicialista 21 (senado.gob.ar). Actores: 10 con roles actualizados. Provincias: Fuerza Patria reemplaza Frente de Todos. 12 alianzas actualizadas. Fuentes cruzadas: INDEC, JP Morgan, Senado.gob.ar, Diputados.gob.ar, Directorio Legislativo, Infobae, Perfil. |
 
 ---
 
