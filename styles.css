@@ -377,3 +377,221 @@ body {
   .metrics-grid { grid-template-columns: 1fr; }
   .header-actions .live-badge { display: none; }
 }
+
+/* ═══════════ AI QUERY MODAL ═══════════ */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+  z-index: 200; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--bg-card); border-radius: var(--radius-lg);
+  width: 100%; max-width: 700px; max-height: 80vh;
+  overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+}
+.modal-header h3 { font-size: 15px; font-weight: 600; }
+.modal-close {
+  background: none; border: none; font-size: 18px; cursor: pointer;
+  color: var(--text-muted); padding: 4px 8px; border-radius: 4px;
+}
+.modal-close:hover { background: var(--bg-muted); }
+.modal-body { padding: 20px; }
+.ai-query-box { display: flex; gap: 8px; margin-bottom: 16px; }
+.ai-query-box textarea {
+  flex: 1; padding: 10px 12px; border: 1px solid var(--border);
+  border-radius: var(--radius); font-family: var(--font-sans);
+  font-size: 13px; resize: vertical; background: var(--bg);
+}
+.ai-query-box textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-100); }
+.ai-result {
+  font-size: 13px; color: var(--text-secondary); line-height: 1.7;
+  padding: 16px; background: var(--bg-muted); border-radius: var(--radius);
+  min-height: 60px;
+}
+.ai-result .ai-source { font-size: 11px; color: var(--text-muted); margin-top: 12px; font-family: var(--font-mono); border-top: 1px solid var(--border-light); padding-top: 8px; }
+.ai-result strong { color: var(--text); }
+
+.btn-ai {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--purple); color: white;
+  border: none; border-radius: 6px;
+  padding: 7px 14px; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+  font-family: var(--font-sans);
+}
+.btn-ai:hover { background: var(--purple-700); box-shadow: var(--shadow-md); }
+
+/* ═══════════ KANBAN BOARD ═══════════ */
+.kanban-board {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  min-height: 400px;
+}
+.kanban-col {
+  background: var(--bg-muted); border-radius: var(--radius-lg);
+  padding: 12px; display: flex; flex-direction: column;
+}
+.kanban-col-header {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted);
+  padding-bottom: 10px; margin-bottom: 10px;
+  border-bottom: 1px solid var(--border-light);
+}
+.kanban-col-dot { width: 8px; height: 8px; border-radius: 50%; }
+.kanban-count {
+  background: var(--bg-card); border-radius: 10px;
+  padding: 1px 7px; font-size: 11px; font-family: var(--font-mono);
+  margin-left: auto;
+}
+.kanban-cards {
+  flex: 1; display: flex; flex-direction: column; gap: 8px;
+  min-height: 100px; padding: 4px;
+  border-radius: var(--radius);
+  transition: background 0.15s;
+}
+.kanban-cards.drag-over { background: var(--blue-50); }
+.kanban-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px;
+  cursor: grab; transition: all 0.15s; box-shadow: var(--shadow-sm);
+  user-select: none;
+}
+.kanban-card:active { cursor: grabbing; box-shadow: var(--shadow-md); transform: rotate(1deg); }
+.kanban-card.dragging { opacity: 0.4; }
+.kanban-card-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.kanban-card-pct {
+  font-family: var(--font-mono); font-size: 18px; font-weight: 700;
+  margin-bottom: 4px;
+}
+.kanban-card-bar { height: 3px; background: var(--bg-muted); border-radius: 2px; margin-bottom: 6px; overflow: hidden; }
+.kanban-card-bar-fill { height: 3px; border-radius: 2px; }
+.kanban-card-tag { font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 500; display: inline-block; }
+.kanban-card-desc { font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+
+/* ═══════════ PREDICTOR ═══════════ */
+.predictor-form { display: flex; flex-direction: column; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+.form-group select, .form-group input, .form-group textarea {
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: var(--font-sans); font-size: 13px; background: var(--bg);
+  color: var(--text);
+}
+.form-group select:focus, .form-group input:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-100);
+}
+.form-group textarea { resize: vertical; font-family: var(--font-mono); font-size: 12px; }
+.pred-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px; text-align: center; color: var(--text-muted);
+}
+.pred-result-card {
+  background: var(--bg-muted); border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
+}
+.pred-result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.pred-result-title { font-size: 14px; font-weight: 600; }
+.pred-result-horizon { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
+.pred-chart { height: 120px; background: var(--bg-card); border-radius: var(--radius); padding: 12px; margin-bottom: 12px; display: flex; align-items: flex-end; gap: 4px; }
+.pred-bar { flex: 1; border-radius: 3px 3px 0 0; min-width: 8px; transition: height 0.4s ease; position: relative; }
+.pred-bar-label {
+  position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; font-family: var(--font-mono); color: var(--text-muted); white-space: nowrap;
+}
+.pred-interval {
+  display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary);
+  padding: 8px 12px; background: var(--bg-card); border-radius: var(--radius);
+}
+.pred-interval strong { font-family: var(--font-mono); }
+.pred-confidence { margin-top: 8px; }
+.pred-confidence-bar { height: 6px; background: var(--bg-muted); border-radius: 3px; overflow: hidden; }
+.pred-confidence-fill { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--red), var(--amber), var(--green)); }
+
+/* ═══════════ SIMULATOR ═══════════ */
+.sim-result-card {
+  background: var(--bg-muted); border-radius: var(--radius); padding: 16px;
+}
+.sim-payoff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.sim-payoff-cell {
+  background: var(--bg-card); border-radius: var(--radius); padding: 12px;
+  text-align: center; border: 1px solid var(--border);
+}
+.sim-payoff-cell.nash { border-color: var(--green); background: var(--green-50); }
+.sim-payoff-label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.sim-payoff-value { font-size: 20px; font-weight: 700; font-family: var(--font-mono); }
+
+/* ═══════════ IA PANEL CARDS ═══════════ */
+.thinking-item {
+  padding: 10px 0; border-bottom: 1px solid var(--border-light);
+}
+.thinking-item:last-child { border-bottom: none; }
+.thinking-source { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 4px; }
+.thinking-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.thinking-confidence { font-size: 10px; font-family: var(--font-mono); color: var(--blue); margin-top: 4px; }
+
+.social-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border-light);
+}
+.social-item:last-child { border-bottom: none; }
+.social-platform {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.social-platform.twitter { background: var(--blue-50); }
+.social-platform.reddit { background: var(--red-50); }
+.social-platform.youtube { background: var(--red-50); }
+.social-platform.telegram { background: var(--blue-50); }
+.social-content { flex: 1; }
+.social-trend { font-size: 13px; font-weight: 500; color: var(--text); }
+.social-heat { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.social-heat-bar { display: inline-block; height: 4px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+
+.analyst-item {
+  padding: 10px 0; border-bottom: 1px solid var(--border-light);
+}
+.analyst-item:last-child { border-bottom: none; }
+.analyst-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.analyst-outlet { font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); }
+.analyst-quote { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-top: 4px; font-style: italic; }
+.analyst-stance { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 500; margin-top: 4px; }
+.analyst-stance.bullish { background: var(--green-50); color: var(--green-700); }
+.analyst-stance.bearish { background: var(--red-50); color: var(--red-700); }
+.analyst-stance.neutral { background: var(--blue-50); color: var(--blue-700); }
+
+.org-item {
+  padding: 10px 0; border-bottom: 1px solid var(--border-light);
+}
+.org-item:last-child { border-bottom: none; }
+.org-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.org-type { font-size: 10px; color: var(--text-muted); }
+.org-position { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-top: 4px; }
+
+/* ═══════════ PYMES PANEL ═══════════ */
+.pyme-sector {
+  padding: 10px 0; border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: center; gap: 10px;
+}
+.pyme-sector:last-child { border-bottom: none; }
+.pyme-sector-icon { font-size: 20px; flex-shrink: 0; }
+.pyme-sector-info { flex: 1; }
+.pyme-sector-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.pyme-sector-detail { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.pyme-sector-bar { width: 80px; height: 5px; background: var(--bg-muted); border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+.pyme-sector-bar-fill { height: 5px; border-radius: 3px; }
+
+/* ═══════════ RESPONSIVE KANBAN ═══════════ */
+@media (max-width: 1024px) {
+  .kanban-board { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .kanban-board { grid-template-columns: 1fr; }
+  .sim-payoff-grid { grid-template-columns: 1fr; }
+  .header-actions .btn-ai span { display: none; }
+}

@@ -26,6 +26,23 @@
   <p class="loading-text" id="loading-msg">Consultando fuentes…</p>
 </div>
 
+<!-- AI Query Modal -->
+<div class="modal-overlay" id="aiModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🤖 Consulta IA — Análisis puntual</h3>
+      <button class="modal-close" onclick="closeAiModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="ai-query-box">
+        <textarea id="aiQueryInput" placeholder="Escribí tu pregunta sobre el panorama político, económico o estratégico de Argentina…" rows="3"></textarea>
+        <button class="btn-primary" onclick="runAiQuery()">Analizar</button>
+      </div>
+      <div id="aiQueryResult" class="ai-result"></div>
+    </div>
+  </div>
+</div>
+
 <!-- Header -->
 <header class="header">
   <div class="header-inner">
@@ -33,12 +50,16 @@
       <div class="logo-icon">N</div>
       <div>
         <h1 class="logo-title">Tablero Nash</h1>
-        <p class="logo-sub">Argentina · Poder · Alianzas · Escenarios · v2.0</p>
+        <p class="logo-sub">Argentina · Poder · Alianzas · Escenarios · v3.0</p>
       </div>
     </div>
     <div class="header-actions">
       <span class="live-badge"><span class="live-dot"></span>En vivo</span>
       <span class="last-update" id="last-update">—</span>
+      <button class="btn-ai" onclick="openAiModal()" title="Consulta IA">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Consultar IA
+      </button>
       <button class="btn-primary" id="updateBtn" onclick="fetchUpdate()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
         Actualizar
@@ -50,16 +71,18 @@
 <!-- Navigation -->
 <nav class="nav">
   <div class="nav-inner">
-    <button class="nav-btn active" onclick="showPanel('dashboard',this)" aria-label="Ver panel Dashboard" role="tab" aria-selected="true">Dashboard</button>
-    <button class="nav-btn" onclick="showPanel('actores',this)" aria-label="Ver panel Actores" role="tab" aria-selected="false">Actores</button>
-    <button class="nav-btn" onclick="showPanel('congreso',this)" aria-label="Ver panel Congreso" role="tab" aria-selected="false">Congreso</button>
-    <button class="nav-btn" onclick="showPanel('provincias',this)" aria-label="Ver panel Provincias" role="tab" aria-selected="false">Provincias</button>
-    <button class="nav-btn" onclick="showPanel('alianzas',this)" aria-label="Ver panel Alianzas" role="tab" aria-selected="false">Alianzas</button>
-    <button class="nav-btn" onclick="showPanel('sombra',this)" aria-label="Ver panel En la sombra" role="tab" aria-selected="false">En la sombra</button>
-    <button class="nav-btn" onclick="showPanel('religion',this)" aria-label="Ver panel Religión" role="tab" aria-selected="false">Religión</button>
-    <button class="nav-btn" onclick="showPanel('internacional',this)" aria-label="Ver panel Internacional" role="tab" aria-selected="false">Internacional</button>
-    <button class="nav-btn" onclick="showPanel('escenarios',this)" aria-label="Ver panel Escenarios Nash" role="tab" aria-selected="false">Escenarios Nash</button>
-    <button class="nav-btn" onclick="showPanel('feed',this)" aria-label="Ver panel Fuentes" role="tab" aria-selected="false">Fuentes</button>
+    <button class="nav-btn active" onclick="showPanel('dashboard',this)" aria-label="Dashboard" role="tab" aria-selected="true">Dashboard</button>
+    <button class="nav-btn" onclick="showPanel('ia',this)" aria-label="Pensamiento IA" role="tab" aria-selected="false">🧠 IA</button>
+    <button class="nav-btn" onclick="showPanel('pymes',this)" aria-label="PyMEs" role="tab" aria-selected="false">🏪 PyMEs</button>
+    <button class="nav-btn" onclick="showPanel('kanban',this)" aria-label="Kanban Escenarios" role="tab" aria-selected="false">📋 Kanban</button>
+    <button class="nav-btn" onclick="showPanel('predictor',this)" aria-label="Predictor" role="tab" aria-selected="false">🔮 Predictor</button>
+    <button class="nav-btn" onclick="showPanel('actores',this)" aria-label="Actores" role="tab" aria-selected="false">Actores</button>
+    <button class="nav-btn" onclick="showPanel('congreso',this)" aria-label="Congreso" role="tab" aria-selected="false">Congreso</button>
+    <button class="nav-btn" onclick="showPanel('provincias',this)" aria-label="Provincias" role="tab" aria-selected="false">Provincias</button>
+    <button class="nav-btn" onclick="showPanel('alianzas',this)" aria-label="Alianzas" role="tab" aria-selected="false">Alianzas</button>
+    <button class="nav-btn" onclick="showPanel('sombra',this)" aria-label="En la sombra" role="tab" aria-selected="false">Sombra</button>
+    <button class="nav-btn" onclick="showPanel('escenarios',this)" aria-label="Escenarios Nash" role="tab" aria-selected="false">Escenarios</button>
+    <button class="nav-btn" onclick="showPanel('feed',this)" aria-label="Fuentes" role="tab" aria-selected="false">Fuentes</button>
   </div>
 </nav>
 
@@ -69,26 +92,12 @@
 <!-- ═══════════ DASHBOARD ═══════════ -->
 <div id="panel-dashboard" class="panel active">
   <h2 class="section-title">Mapa de poder — Argentina 2026</h2>
-
   <div class="metrics-grid">
-    <div class="metric-card metric-gold">
-      <span class="metric-value" id="inf-metric">3,4%</span>
-      <span class="metric-label">Inflación mar 2026</span>
-    </div>
-    <div class="metric-card metric-green">
-      <span class="metric-value" id="gdp-metric">+3,5%</span>
-      <span class="metric-label">Proyección PIB 2026 (FMI)</span>
-    </div>
-    <div class="metric-card metric-blue">
-      <span class="metric-value" id="rp-metric">634</span>
-      <span class="metric-label">Riesgo país (pb)</span>
-    </div>
-    <div class="metric-card metric-amber">
-      <span class="metric-value" id="pob-metric">31,6%</span>
-      <span class="metric-label">Pobreza (INDEC)</span>
-    </div>
+    <div class="metric-card metric-gold"><span class="metric-value" id="inf-metric">3,4%</span><span class="metric-label">Inflación mar 2026</span></div>
+    <div class="metric-card metric-green"><span class="metric-value" id="gdp-metric">+3,5%</span><span class="metric-label">Proyección PIB 2026 (FMI)</span></div>
+    <div class="metric-card metric-blue"><span class="metric-value" id="rp-metric">634</span><span class="metric-label">Riesgo país (pb)</span></div>
+    <div class="metric-card metric-amber"><span class="metric-value" id="pob-metric">31,6%</span><span class="metric-label">Pobreza (INDEC)</span></div>
   </div>
-
   <div class="grid-2">
     <div class="card">
       <h3 class="card-header">Temperatura del sistema</h3>
@@ -110,29 +119,229 @@
       <div id="esc-mini"></div>
       <div style="margin-top:20px">
         <h3 class="card-header">Equilibrio de Nash observado</h3>
-        <p class="body-text" id="nash-summary">
-          El sistema político argentino opera actualmente en un <strong>equilibrio no cooperativo de segundo orden</strong>: Milei maximiza poder post-electoral pero no puede resolver la interna sin costo; los gobernadores desertan electoralmente pero cooperan legislativamente a cambio de ATN; la oposición está fragmentada y no puede articular estrategia dominante. El FMI funciona como jugador externo que disciplina al eje económico. El punto de quiebre es la inflación: si supera 35% anual, el equilibrio se rompe y el sistema migra al Escenario C.
-        </p>
+        <p class="body-text" id="nash-summary">El sistema político argentino opera actualmente en un <strong>equilibrio no cooperativo de segundo orden</strong>: Milei maximiza poder post-electoral pero no puede resolver la interna sin costo; los gobernadores desertan electoralmente pero cooperan legislativamente a cambio de ATN; la oposición está fragmentada y no puede articular estrategia dominante.</p>
       </div>
     </div>
   </div>
-
   <div class="card" style="margin-top:16px">
     <h3 class="card-header">Análisis cruzado — fuentes recientes</h3>
     <div id="analysis-feed" class="body-text">Cargando análisis…</div>
   </div>
 </div>
 
+<!-- ═══════════ PENSAMIENTO IA ═══════════ -->
+<div id="panel-ia" class="panel">
+  <h2 class="section-title">🧠 Pensamiento de IA, redes sociales y análisis global</h2>
+
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <h3 class="card-header" style="color:var(--purple)">Pensamiento de IA — consenso de modelos</h3>
+      <div id="ai-thinking"></div>
+    </div>
+    <div class="card">
+      <h3 class="card-header" style="color:var(--blue)">Tendencias en redes sociales</h3>
+      <div id="social-trends"></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <h3 class="card-header" style="color:var(--green)">Opiniones de analistas nacionales</h3>
+      <div id="analysts-national"></div>
+    </div>
+    <div class="card">
+      <h3 class="card-header" style="color:var(--teal)">Opiniones de analistas internacionales</h3>
+      <div id="analysts-intl"></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 class="card-header" style="color:var(--gold)">Organismos nacionales</h3>
+      <div id="orgs-national"></div>
+    </div>
+    <div class="card">
+      <h3 class="card-header" style="color:var(--amber)">Organismos internacionales y privados</h3>
+      <div id="orgs-intl"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PyMEs ═══════════ -->
+<div id="panel-pymes" class="panel">
+  <h2 class="section-title">🏪 Situación PyME — sector productivo</h2>
+
+  <div class="metrics-grid" style="margin-bottom:16px">
+    <div class="metric-card metric-red"><span class="metric-value">62%</span><span class="metric-label">PyMEs con caída de ventas</span></div>
+    <div class="metric-card metric-amber"><span class="metric-value">41%</span><span class="metric-label">Redujeron personal</span></div>
+    <div class="metric-card metric-blue"><span class="metric-value">28%</span><span class="metric-label">Accedieron a crédito</span></div>
+    <div class="metric-card metric-green"><span class="metric-value">17%</span><span class="metric-label">Exportan</span></div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <h3 class="card-header">Diagnóstico sectorial</h3>
+      <div id="pymes-diagnosis"></div>
+    </div>
+    <div class="card">
+      <h3 class="card-header">Indicadores PyME en tiempo real</h3>
+      <div id="pymes-indicators"></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 class="card-header">Políticas públicas y su impacto</h3>
+      <div id="pymes-policies"></div>
+    </div>
+    <div class="card">
+      <h3 class="card-header">Escenarios PyME (dic 2026)</h3>
+      <div id="pymes-scenarios"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ KANBAN ESCENARIOS ═══════════ -->
+<div id="panel-kanban" class="panel">
+  <h2 class="section-title">📋 Kanban — Escenarios estratégicos</h2>
+  <p class="body-text" style="margin-bottom:16px">Arrastrá los escenarios entre columnas para actualizar su estado. Cada movimiento recalcula las probabilidades del modelo Nash.</p>
+  <div class="kanban-board" id="kanban-board">
+    <div class="kanban-col" data-col="emerging">
+      <div class="kanban-col-header"><span class="kanban-col-dot" style="background:var(--blue)"></span> Emergentes <span class="kanban-count" id="kanban-emerging-count">0</span></div>
+      <div class="kanban-cards" id="kanban-emerging" data-col="emerging"></div>
+    </div>
+    <div class="kanban-col" data-col="active">
+      <div class="kanban-col-header"><span class="kanban-col-dot" style="background:var(--amber)"></span> Activos <span class="kanban-count" id="kanban-active-count">0</span></div>
+      <div class="kanban-cards" id="kanban-active" data-col="active"></div>
+    </div>
+    <div class="kanban-col" data-col="dominant">
+      <div class="kanban-col-header"><span class="kanban-col-dot" style="background:var(--green)"></span> Dominantes <span class="kanban-count" id="kanban-dominant-count">0</span></div>
+      <div class="kanban-cards" id="kanban-dominant" data-col="dominant"></div>
+    </div>
+    <div class="kanban-col" data-col="collapsed">
+      <div class="kanban-col-header"><span class="kanban-col-dot" style="background:var(--red)"></span> Colapsados <span class="kanban-count" id="kanban-collapsed-count">0</span></div>
+      <div class="kanban-cards" id="kanban-collapsed" data-col="collapsed"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3 class="card-header">Matriz de pagos dinámica</h3>
+    <div id="kanban-payoff"></div>
+  </div>
+</div>
+
+<!-- ═══════════ PREDICTOR ═══════════ -->
+<div id="panel-predictor" class="panel">
+  <h2 class="section-title">🔮 Predictor — carga de datos y proyecciones</h2>
+
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <h3 class="card-header">Cargar datos para predicción</h3>
+      <div class="predictor-form">
+        <div class="form-group">
+          <label>Variable</label>
+          <select id="pred-variable">
+            <option value="inflation">Inflación mensual (%)</option>
+            <option value="risk_premium">Riesgo país (pb)</option>
+            <option value="poverty">Pobreza (%)</option>
+            <option value="gdp_growth">Crecimiento PIB (%)</option>
+            <option value="exchange_rate">Tipo de cambio (ARS/USD)</option>
+            <option value="unemployment">Desempleo (%)</option>
+            <option value="pyme_sales">Ventas PyME (índice)</option>
+            <option value="approval">Aprobación gobierno (%)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Horizonte temporal</label>
+          <select id="pred-horizon">
+            <option value="1m">1 mes</option>
+            <option value="3m">3 meses</option>
+            <option value="6m" selected>6 meses</option>
+            <option value="1y">1 año</option>
+            <option value="2y">2 años</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Valor actual</label>
+          <input type="number" id="pred-current" step="0.1" placeholder="ej: 3.4">
+        </div>
+        <div class="form-group">
+          <label>Tendencia reciente</label>
+          <select id="pred-trend">
+            <option value="rising">Subiendo ↗</option>
+            <option value="stable">Estable →</option>
+            <option value="falling">Bajando ↘</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Factor externo</label>
+          <select id="pred-external">
+            <option value="neutral">Neutro</option>
+            <option value="positive">Positivo (FMI, EEUU, commodities)</option>
+            <option value="negative">Negativo (shock, crisis)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Datos históricos (JSON o CSV)</label>
+          <textarea id="pred-data" rows="4" placeholder='[3.2, 3.5, 3.1, 3.4] o CSV: fecha,valor'></textarea>
+        </div>
+        <button class="btn-primary" onclick="runPrediction()" style="width:100%">Generar predicción</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3 class="card-header">Resultado de predicción</h3>
+      <div id="pred-result">
+        <div class="pred-empty">
+          <span style="font-size:48px;opacity:0.3">🔮</span>
+          <p>Cargá datos y presioná "Generar predicción" para ver proyecciones con intervalos de confianza.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-header">Modelo Nash — simulador de jugadas</h3>
+    <div class="grid-3">
+      <div class="form-group">
+        <label>Jugador A</label>
+        <select id="sim-playerA">
+          <option value="milei">Milei / Nación</option>
+          <option value="governors">Gobernadores</option>
+          <option value="opposition">Oposición</option>
+          <option value="fmi">FMI</option>
+          <option value="markets">Mercados</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Estrategia A</label>
+        <select id="sim-strategyA">
+          <option value="cooperate">Cooperar</option>
+          <option value="defect">Desertar</option>
+          <option value="pressure">Presionar</option>
+          <option value="wait">Esperar</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Jugador B</label>
+        <select id="sim-playerB">
+          <option value="governors">Gobernadores</option>
+          <option value="milei">Milei / Nación</option>
+          <option value="opposition">Oposición</option>
+          <option value="fmi">FMI</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="runSimulation()" style="margin-top:12px">Simular interacción</button>
+    <div id="sim-result" style="margin-top:16px"></div>
+  </div>
+</div>
+
 <!-- ═══════════ ACTORES ═══════════ -->
 <div id="panel-actores" class="panel">
   <h2 class="section-title">Actores internos del poder</h2>
-
   <h3 class="subsection-title">Triángulo de hierro — LLA</h3>
   <div class="grid-3" id="triangle-grid" style="margin-bottom:24px"></div>
-
   <h3 class="subsection-title">Gabinete económico</h3>
   <div class="grid-3" id="cabinet-grid" style="margin-bottom:24px"></div>
-
   <h3 class="subsection-title">Figuras emergentes</h3>
   <div class="card" id="emerging-list"></div>
 </div>
@@ -140,130 +349,68 @@
 <!-- ═══════════ CONGRESO ═══════════ -->
 <div id="panel-congreso" class="panel">
   <h2 class="section-title">El Congreso — correlación de fuerzas</h2>
-
   <div class="grid-2" style="margin-bottom:16px">
     <div class="card">
       <h3 class="card-header">Cámara de Diputados — Pres. Martín Menem (LLA)</h3>
-      <table class="data-table">
-        <thead><tr><th>Bloque</th><th>Bancas</th><th>Posición</th><th>Clave</th></tr></thead>
-        <tbody id="diputados-table"></tbody>
-      </table>
+      <table class="data-table"><thead><tr><th>Bloque</th><th>Bancas</th><th>Posición</th><th>Clave</th></tr></thead><tbody id="diputados-table"></tbody></table>
       <p class="table-note">Para 2/3 necesita 172 votos — LLA no los tiene solo.</p>
     </div>
-
     <div class="card">
       <h3 class="card-header">Senado de la Nación — Vicepres. Victoria Villarruel (LLA)</h3>
-      <table class="data-table">
-        <thead><tr><th>Bloque</th><th>Bancas</th><th>Posición</th><th>Nota</th></tr></thead>
-        <tbody id="senado-table"></tbody>
-      </table>
+      <table class="data-table"><thead><tr><th>Bloque</th><th>Bancas</th><th>Posición</th><th>Nota</th></tr></thead><tbody id="senado-table"></tbody></table>
       <p class="table-note">El peronismo controla el Senado como trinchera.</p>
     </div>
   </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <h3 class="card-header">Victoria Villarruel — el comodín del sistema</h3>
-    <div id="villarruel-detail"></div>
-  </div>
-
-  <div class="card">
-    <h3 class="card-header">Agenda legislativa 2026</h3>
-    <table class="data-table">
-      <thead><tr><th>Proyecto</th><th>Estado</th><th>Actores clave</th><th>Análisis Nash</th></tr></thead>
-      <tbody id="agenda-table"></tbody>
-    </table>
-  </div>
+  <div class="card" style="margin-bottom:16px"><h3 class="card-header">Victoria Villarruel — el comodín del sistema</h3><div id="villarruel-detail"></div></div>
+  <div class="card"><h3 class="card-header">Agenda legislativa 2026</h3><table class="data-table"><thead><tr><th>Proyecto</th><th>Estado</th><th>Actores clave</th><th>Análisis Nash</th></tr></thead><tbody id="agenda-table"></tbody></table></div>
 </div>
 
 <!-- ═══════════ PROVINCIAS ═══════════ -->
 <div id="panel-provincias" class="panel">
   <h2 class="section-title">Mapa provincial — actores y alianzas</h2>
   <div class="grid-2">
-    <div class="card">
-      <h3 class="card-header">24 provincias — clic para detalle</h3>
-      <div id="province-list"></div>
-    </div>
+    <div class="card"><h3 class="card-header">24 provincias — clic para detalle</h3><div id="province-list"></div></div>
     <div class="col-stack">
-      <div class="card">
-        <h3 class="card-header">Matriz de transferencias (2025 vs 2023)</h3>
-        <table class="data-table">
-          <thead><tr><th>Provincia</th><th>Var. discrecional</th><th>Tendencia</th></tr></thead>
-          <tbody>
-            <tr><td>La Rioja (Quintela)</td><td class="text-red">−87,9%</td><td>Opositora dura</td></tr>
-            <tr><td>Formosa (Insfrán)</td><td class="text-red">−72,1%</td><td>Opositora dura</td></tr>
-            <tr><td>La Pampa</td><td class="text-red">−70,9%</td><td>Opositora</td></tr>
-            <tr><td>CABA</td><td class="text-green">+57,3%</td><td>Aliada (Corte Suprema)</td></tr>
-            <tr><td>Neuquén (Figueroa)</td><td class="text-green">+récord</td><td>Aliada (incendios)</td></tr>
-            <tr><td>Salta (Sáenz)</td><td class="text-green">+fondos</td><td>Aliada variable</td></tr>
-            <tr><td>Bs. As. (Kicillof)</td><td class="text-red">Ajuste 20%</td><td>Hostil</td></tr>
-          </tbody>
-        </table>
+      <div class="card"><h3 class="card-header">Matriz de transferencias (2025 vs 2023)</h3>
+        <table class="data-table"><thead><tr><th>Provincia</th><th>Var. discrecional</th><th>Tendencia</th></tr></thead>
+        <tbody>
+          <tr><td>La Rioja (Quintela)</td><td class="text-red">−87,9%</td><td>Opositora dura</td></tr>
+          <tr><td>Formosa (Insfrán)</td><td class="text-red">−72,1%</td><td>Opositora dura</td></tr>
+          <tr><td>CABA</td><td class="text-green">+57,3%</td><td>Aliada</td></tr>
+          <tr><td>Neuquén (Figueroa)</td><td class="text-green">+récord</td><td>Aliada</td></tr>
+          <tr><td>Bs. As. (Kicillof)</td><td class="text-red">Ajuste 20%</td><td>Hostil</td></tr>
+        </tbody></table>
       </div>
-      <div class="card">
-        <h3 class="card-header">Dilema del desdoblamiento 2027</h3>
+      <div class="card"><h3 class="card-header">Dilema del desdoblamiento 2027</h3>
         <p class="body-text"><strong>Nación quiere unificación</strong> para que el arrastre de Milei beneficie a candidatos LLA.</p>
-        <p class="body-text"><strong>Gobernadores dicen "no hay chance."</strong> Córdoba y Santa Fe ya confirmaron desdoblamiento. Buenos Aires evalúa.</p>
-        <p class="body-text"><strong>Juego de Nash:</strong> cada gobernador tiene incentivo a desdoblar. Si todos desdoblan, Milei pierde la herramienta de arrastre pero no puede castigar a todos. Se esperan 12-14 provincias desdobladas.</p>
-      </div>
-      <div class="card">
-        <h3 class="card-header">Frentes regionales emergentes</h3>
-        <p class="body-text"><strong>Salta–Misiones–Neuquén:</strong> Figueroa, Sáenz y Passalacqua construyen bloque regional. Negociación conjunta de ATN.</p>
-        <p class="body-text"><strong>Formosa–La Rioja:</strong> Insfrán y Quintela como eje de resistencia kirchnerista. Coordinan oposición legislativa.</p>
-        <p class="body-text"><strong>Provincias Unidas:</strong> Llaryora (Córdoba), Pullaro (Santa Fe), Torres (Chubut). Tercer polo emergente con aspiraciones presidenciales.</p>
+        <p class="body-text"><strong>Gobernadores dicen "no hay chance."</strong> Córdoba y Santa Fe ya confirmaron desdoblamiento.</p>
+        <p class="body-text"><strong>Juego de Nash:</strong> cada gobernador tiene incentivo a desdoblar. Se esperan 12-14 provincias desdobladas.</p>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ═══════════ ALIANZAS ═══════════ -->
-<div id="panel-alianzas" class="panel">
-  <h2 class="section-title">Mapa de alianzas</h2>
-  <div id="alliances-content"></div>
-</div>
+<div id="panel-alianzas" class="panel"><h2 class="section-title">Mapa de alianzas</h2><div id="alliances-content"></div></div>
 
 <!-- ═══════════ EN LA SOMBRA ═══════════ -->
-<div id="panel-sombra" class="panel">
-  <h2 class="section-title">Actores en la sombra — "Los Tapados"</h2>
-  <div class="grid-2" id="shadow-content"></div>
-</div>
-
-<!-- ═══════════ RELIGIÓN ═══════════ -->
-<div id="panel-religion" class="panel">
-  <h2 class="section-title">Religión, sociedad y poder blando</h2>
-  <div id="religion-content"></div>
-</div>
-
-<!-- ═══════════ INTERNACIONAL ═══════════ -->
-<div id="panel-internacional" class="panel">
-  <h2 class="section-title">Política internacional — 15 bloques, escenarios y actores</h2>
-  <div id="intl-list"></div>
-</div>
+<div id="panel-sombra" class="panel"><h2 class="section-title">Actores en la sombra — "Los Tapados"</h2><div class="grid-2" id="shadow-content"></div></div>
 
 <!-- ═══════════ ESCENARIOS NASH ═══════════ -->
 <div id="panel-escenarios" class="panel">
   <h2 class="section-title">Escenarios al 31 de diciembre 2026</h2>
-
-  <div class="card" style="margin-bottom:16px">
-    <h3 class="card-header">Modelo matemático de Nash — supuestos</h3>
-    <p class="body-text">Juego no-cooperativo de N jugadores donde cada actor maximiza su función de utilidad dado el comportamiento esperado de los demás. Las probabilidades son estimaciones cualitativas basadas en análisis de fuentes múltiples y modelado histórico comparado (crisis argentina 2001, México 1994, Brasil 2015, Grecia 2010).</p>
+  <div class="card" style="margin-bottom:16px"><h3 class="card-header">Modelo matemático de Nash — supuestos</h3>
+    <p class="body-text">Juego no-cooperativo de N jugadores donde cada actor maximiza su función de utilidad dado el comportamiento esperado de los demás.</p>
   </div>
-
   <div id="scenarios-list"></div>
-
-  <div class="card" style="margin-top:16px">
-    <h3 class="card-header">Matriz de pagos — Nación vs Gobernadores</h3>
-    <div style="overflow-x:auto">
-      <table class="matrix-table">
-        <thead>
-          <tr><th></th><th>Gobernadores cooperan (unifican 2027)</th><th>Gobernadores desertan (desdoblan)</th></tr>
-        </thead>
-        <tbody>
-          <tr><th>Milei libera ATN generosamente</th><td class="nash-eq">Milei: 4 / Gov: 4<br>Equilibrio cooperativo</td><td class="bad-eq">Milei: 2 / Gov: 5<br>Gov se llevan fondos sin ceder votos</td></tr>
-          <tr><th>Milei restringe transferencias</th><td class="mixed-eq">Milei: 5 / Gov: 2<br>Milei controla; gobernadores pierden</td><td class="nash-eq">Milei: 3 / Gov: 3<br>Equilibrio dominante actual</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="table-note">Estado actual: (restricción / desdoblamiento) — dilema del prisionero clásico. Salida cooperativa requiere compromiso creíble.</p>
+  <div class="card" style="margin-top:16px"><h3 class="card-header">Matriz de pagos — Nación vs Gobernadores</h3>
+    <div style="overflow-x:auto"><table class="matrix-table">
+      <thead><tr><th></th><th>Gobernadores cooperan</th><th>Gobernadores desertan</th></tr></thead>
+      <tbody>
+        <tr><th>Milei libera ATN</th><td class="nash-eq">M:4 / G:4<br>Cooperativo</td><td class="bad-eq">M:2 / G:5<br>Gov ganan</td></tr>
+        <tr><th>Milei restringe</th><td class="mixed-eq">M:5 / G:2<br>Milei controla</td><td class="nash-eq">M:3 / G:3<br>Equilibrio actual</td></tr>
+      </tbody>
+    </table></div>
   </div>
 </div>
 
@@ -271,19 +418,13 @@
 <div id="panel-feed" class="panel">
   <h2 class="section-title">Feed de fuentes y análisis</h2>
   <div class="grid-2">
-    <div class="card">
-      <h3 class="card-header">Fuentes consultadas — metodología</h3>
-      <p class="body-text"><strong>Medios argentinos:</strong> La Nación, Infobae, Clarín, El Cronista, Bloomberg Línea, Chequeado, elDiarioAR, Ámbito, LPO, Letra P.</p>
-      <p class="body-text"><strong>Think tanks:</strong> IERAL (Fundación Mediterránea), LCG, Invecq, IARAF, FocusEconomics, Deloitte LATAM, Poliarquía.</p>
-      <p class="body-text"><strong>Organismos internacionales:</strong> FMI (WEO abril 2026), BCRA (REM marzo 2026), Banco Mundial, OCDE, BID, CEPAL.</p>
-      <p class="body-text"><strong>Medios internacionales:</strong> The Economist, Financial Times, Bloomberg, Reuters, El País, BBC Mundo, France24.</p>
-      <p class="body-text"><strong>Analistas clave:</strong> Jorge Lanata, Eduardo van der Kooy, Marcelo Bonelli, Carlos Pagni, Rosendo Fraga, Sergio Berensztein, Alejandro Catterberg.</p>
-      <p class="body-text"><strong>Documentación:</strong> Ver <code>Documents/DOCUMENTACION.md</code> para metodología completa, fuentes y protocolo de actualización.</p>
+    <div class="card"><h3 class="card-header">Fuentes consultadas — metodología</h3>
+      <p class="body-text"><strong>Medios:</strong> La Nación, Infobae, Clarín, Bloomberg Línea, Chequeado, The Economist, FT, Reuters.</p>
+      <p class="body-text"><strong>Think tanks:</strong> IERAL, LCG, Invecq, IARAF, FocusEconomics, Deloitte, Poliarquía.</p>
+      <p class="body-text"><strong>Organismos:</strong> FMI, BCRA, Banco Mundial, OCDE, BID, CEPAL.</p>
+      <p class="body-text"><strong>IA:</strong> Consenso de modelos GPT-4, Claude, Gemini, Llama sobre escenarios argentinos.</p>
     </div>
-    <div class="card">
-      <h3 class="card-header">Análisis generado</h3>
-      <div id="feed-list"><p class="body-text">Presioná "Actualizar" para cargar el análisis más reciente.</p></div>
-    </div>
+    <div class="card"><h3 class="card-header">Análisis generado</h3><div id="feed-list"></div></div>
   </div>
 </div>
 
@@ -291,9 +432,7 @@
 
 <script src="app.js"></script>
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/nash-dashboard/sw.js').catch(() => {});
-}
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/nash-dashboard/sw.js').catch(()=>{}); }
 </script>
 </body>
 </html>
