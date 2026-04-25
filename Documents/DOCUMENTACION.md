@@ -115,6 +115,14 @@ _(Pendiente: Software Architect + Cloud Architect)_
 | ADR-003 | 2026-04-25 | Sistema de comando "documentar" para actualización de docs | ✅ Aprobado | Scrum Master |
 | ADR-004 | 2026-04-25 | Plan por etapas desde 35 perspectivas profesionales | ✅ Aprobado | Product Manager |
 | ADR-005 | 2026-04-25 | Matriz RACI para asignación de responsabilidades | ✅ Aprobado | Delivery Manager |
+| ADR-006 | 2026-04-25 | Product Vision Document con north star metrics | ✅ Aprobado | Product Manager |
+| ADR-007 | 2026-04-25 | Security Baseline — clasificación de riesgo BAJO | ✅ Aprobado | Cybersecurity Architect |
+| ADR-008 | 2026-04-25 | Compliance Checklist — Ley 25.326, GDPR, accesibilidad | ✅ Aprobado | Legal & Compliance + DPO |
+| ADR-009 | 2026-04-25 | Risk Register — 10 riesgos identificados | ✅ Aprobado | Delivery Manager |
+| ADR-010 | 2026-04-25 | Backlog inicial — 28 historias, 159 story points | ✅ Aprobado | Product Owner |
+| ADR-011 | 2026-04-25 | GitHub Actions CI/CD → deploy a GitHub Pages | ✅ Aprobado | DevOps Engineer |
+| ADR-012 | 2026-04-25 | index.html placeholder con design system base (dark theme) | ✅ Aprobado | UI Designer + Frontend Dev |
+| ADR-013 | 2026-04-25 | CSP headers básicos implementados en index.html | ✅ Aprobado | Cybersecurity Architect |
 
 ---
 
@@ -132,11 +140,17 @@ _(Pendiente: DBA + Data Engineer)_
 
 ## 6. Seguridad
 
-_(Pendiente: Cybersecurity Architect + DPO)_
+_(Fase 0 completada: Cybersecurity Architect)_
 
-- Threat model: pendiente
-- Zero trust: pendiente
-- GDPR/Compliance: pendiente
+- ✅ Security Baseline creado — clasificación de riesgo: BAJO
+- ✅ CSP headers básicos en index.html
+- ✅ 10 amenazas identificadas y documentadas
+- 🟡 Branch protection: pendiente configuración en GitHub
+- 🟡 Dependabot: pendiente habilitación
+- 🟡 SRI para Google Fonts: pendiente
+- ⚪ Threat model detallado: pendiente (Fase 2)
+- ⚪ Zero trust: pendiente (Fase 2)
+- ⚪ GDPR/Privacy by design: pendiente (Fase 2)
 
 ---
 
@@ -149,13 +163,26 @@ _(Pendiente: QA Automation Engineer)_
 ## 8. Producto y UX
 
 ### 8.1 User Research
-_(Pendiente: UX Researcher)_
+_(Pendiente: UX Researcher — Fase 1)_
 
 ### 8.2 Design System
-_(Pendiente: UI Designer)_
+_(Pendiente: UI Designer — Fase 2)_
+- 🟡 Design system base implementado en index.html (dark theme, variables CSS)
 
 ### 8.3 Content Strategy
-_(Pendiente: UX Writer + Content Manager)_
+_(Pendiente: UX Writer + Content Manager — Fase 2)_
+
+### 8.4 Product Vision
+- ✅ Product Vision Document creado con:
+  - North star metrics (5 KPIs)
+  - MVP features priorizadas (10 features)
+  - Stakeholders identificados
+  - Restricciones documentadas
+  - Roadmap Q2 2026 → Q1 2027
+
+### 8.5 Backlog
+- ✅ Backlog inicial: 28 historias, 159 story points
+- 7 épicas: Infra, Visión, Dashboard, Nash, Contenido, Calidad, Diseño
 
 ---
 
@@ -166,9 +193,10 @@ _(En progreso: DevOps Engineer)_
 - ✅ Repositorio Git inicializado y configurado
 - ✅ Remote configurado: `github.com/pabloeckert/nash-dashboard`
 - ✅ Branch `master` con push automático
-- 🟡 Pipeline CI/CD: pendiente configuración
-- ⚪ SLOs/SLIs: pendiente
-- ⚪ Observabilidad: pendiente
+- ✅ GitHub Actions CI/CD — deploy automático a GitHub Pages
+- ✅ CSP headers básicos configurados
+- ⚪ SLOs/SLIs: pendiente (Fase 3)
+- ⚪ Observabilidad: pendiente (Fase 3)
 
 ---
 
@@ -180,7 +208,16 @@ _(Pendiente: Growth Manager + ASO + SEO + Performance Marketing)_
 
 ## 11. Legal y Compliance
 
-_(Pendiente: Legal & Compliance Officer + DPO)_
+_(Fase 0 completada: Legal & Compliance Officer + DPO)_
+
+- ✅ Compliance Checklist creado — 6 categorías regulatorias evaluadas
+- ✅ Ley 25.326 (Protección de Datos): N/A — no se recopilan datos personales
+- ✅ GDPR: N/A — sin cookies, sin tracking
+- ✅ Licencia MIT verificada
+- 🟡 Disclaimer de análisis propio: pendiente redacción (Fase 1)
+- 🟡 Documentación de fuentes oficiales: pendiente (Fase 1)
+- ⚪ Auditoría WCAG 2.1: pendiente (Fase 2)
+- ⚪ Política de privacidad simple: pendiente (Fase 5)
 
 ---
 
@@ -198,6 +235,7 @@ _(Pendiente: Customer Success + Technical Support + RevOps)_
 | 2026-04-25 21:09 | AI Assistant | Análisis multidisciplinario desde 35 roles profesionales. Creación de PLAN-ETAPAS.md con 8 fases, RACI.md con matriz de responsabilidades, COMANDO-DOCUMENTAR.md con protocolo de actualización |
 | 2026-04-25 21:12 | AI Assistant | Configuración de repositorio Git. Remote: `github.com/pabloeckert/nash-dashboard`. Push inicial a `master`. Sistema de memoria (MEMORY.md + daily notes) inicializado |
 | 2026-04-25 21:14 | AI Assistant | Primera ejecución del comando "documentar". Actualización de DOCUMENTACION.md con avances, ADRs (5 decisiones), sección DevOps actualizada. Registro de trabajo completo en log |
+| 2026-04-25 21:16 | AI Assistant | Continuación Fase 0: creado PRODUCT-VISION.md (north star metrics, MVP features, roadmap), SECURITY-BASELINE.md (10 amenazas, controles), COMPLIANCE-CHECKLIST.md (6 categorías regulatorias), RISK-REGISTER.md (10 riesgos), BACKLOG.md (28 historias, 159 SP). CI/CD con GitHub Actions para deploy a GitHub Pages. index.html placeholder con dark theme y CSP. 8 ADRs nuevos (ADR-006 a ADR-013). |
 
 ---
 

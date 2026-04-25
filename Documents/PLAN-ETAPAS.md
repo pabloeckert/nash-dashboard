@@ -8,7 +8,7 @@
 
 | Fase | Estado | Progreso |
 |------|--------|----------|
-| Fase 0: Fundación | 🟡 En progreso | 25% |
+| Fase 0: Fundación | 🟡 En progreso | 75% |
 | Fase 1: Discovery | ⚪ No iniciada | 0% |
 | Fase 2: Diseño | ⚪ No iniciada | 0% |
 | Fase 3: Desarrollo Core | ⚪ No iniciada | 0% |
@@ -41,19 +41,19 @@ Establecer la base organizativa, técnica y documental del proyecto.
 
 ### Entregables
 - [x] Repositorio con estructura definida — ✅ `github.com/pabloeckert/nash-dashboard`
-- [ ] Pipeline CI/CD funcional (build + test básico)
-- [x] Documentación central (este archivo) — ✅ Carpeta `Documents/` con 4 archivos
-- [ ] Product Vision Document
-- [ ] Backlog inicial en herramienta seleccionada
-- [ ] Security Baseline
-- [ ] Compliance Checklist
-- [ ] Risk Register
+- [x] Pipeline CI/CD funcional — ✅ GitHub Actions deploy a GitHub Pages
+- [x] Documentación central — ✅ Carpeta `Documents/` con 7 archivos
+- [x] Product Vision Document — ✅ `Documents/PRODUCT-VISION.md`
+- [x] Backlog inicial — ✅ `Documents/BACKLOG.md` (28 historias, 159 SP)
+- [x] Security Baseline — ✅ `Documents/SECURITY-BASELINE.md`
+- [x] Compliance Checklist — ✅ `Documents/COMPLIANCE-CHECKLIST.md`
+- [x] Risk Register — ✅ `Documents/RISK-REGISTER.md` (10 riesgos)
 
 ### Criterios de éxito
 - ✅ Repositorio accesible por todo el equipo — GitHub configurado
-- Pipeline ejecuta correctamente en push — pendiente CI/CD
+- ✅ Pipeline ejecuta correctamente en push — GitHub Actions deploy
 - ✅ Todos los roles tienen acceso a documentación central — `Documents/` en repo
-- Visión de producto alineada con stakeholders — pendiente
+- 🟡 Visión de producto alineada con stakeholders — Pendiente validación con Pablo
 
 ---
 
