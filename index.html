@@ -3,270 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self';">
     <title>Tablero Nash — Argentina: Poder, Alianzas y Escenarios</title>
     <meta name="description" content="Dashboard interactivo de análisis político argentino mediante teoría de juegos de Nash.">
+    <meta name="theme-color" content="#0a0e17">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-primary: #0a0e17;
-            --bg-secondary: #111827;
-            --bg-card: #1a2332;
-            --text-primary: #e2e8f0;
-            --text-secondary: #94a3b8;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-yellow: #f59e0b;
-            --accent-purple: #8b5cf6;
-            --border: #1e293b;
-            --font-sans: 'Inter', system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-        }
-
-        .header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .header h1 {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .header h1 span {
-            color: var(--accent-blue);
-        }
-
-        .header .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--accent-green);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .status-badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent-green);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .main {
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .metric-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-        }
-
-        .metric-card .label {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        .metric-card .value {
-            font-size: 1.75rem;
-            font-weight: 700;
-            font-family: var(--font-mono);
-        }
-
-        .metric-card .change {
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
-        }
-
-        .change.positive { color: var(--accent-green); }
-        .change.negative { color: var(--accent-red); }
-        .change.neutral { color: var(--accent-yellow); }
-
-        .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .placeholder-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-
-        .placeholder-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 2rem;
-            text-align: center;
-            color: var(--text-secondary);
-        }
-
-        .placeholder-card .icon {
-            font-size: 2rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .placeholder-card .title {
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .placeholder-card .desc {
-            font-size: 0.8125rem;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            border-top: 1px solid var(--border);
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .header { padding: 1rem; flex-direction: column; gap: 0.5rem; }
-            .main { padding: 1rem; }
-            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header class="header">
-        <div>
-            <h1>🎯 <span>Tablero Nash</span></h1>
-            <span class="subtitle">Argentina: Poder, Alianzas y Escenarios</span>
-        </div>
-        <span class="status-badge">En desarrollo</span>
-    </header>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    🎯 <span class="accent">Tablero Nash</span>
+                </div>
+                <span class="status-badge">
+                    <span class="status-dot"></span>
+                    Activo
+                </span>
+            </div>
+            <div class="header-right">
+                <span>Actualizado: <span id="update-time" class="update-time">2026-04-25</span></span>
+            </div>
+        </header>
 
-    <main class="main">
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="label">Inflación (anual)</div>
-                <div class="value" style="color: var(--accent-red);">—</div>
-                <div class="change neutral">Datos próximamente</div>
-            </div>
-            <div class="metric-card">
-                <div class="label">PIB (var. trimestral)</div>
-                <div class="value" style="color: var(--accent-blue);">—</div>
-                <div class="change neutral">Datos próximamente</div>
-            </div>
-            <div class="metric-card">
-                <div class="label">Riesgo País</div>
-                <div class="value" style="color: var(--accent-yellow);">—</div>
-                <div class="change neutral">Datos próximamente</div>
-            </div>
-            <div class="metric-card">
-                <div class="label">Pobreza</div>
-                <div class="value" style="color: var(--accent-purple);">—</div>
-                <div class="change neutral">Datos próximamente</div>
-            </div>
-        </div>
+        <!-- Navigation -->
+        <nav class="nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-section="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="actores">
+                        <span class="nav-icon">🗺️</span>
+                        <span class="nav-text">Actores</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="congreso">
+                        <span class="nav-icon">🏛️</span>
+                        <span class="nav-text">Congreso</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="provincias">
+                        <span class="nav-icon">🗺️</span>
+                        <span class="nav-text">Provincias</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="alianzas">
+                        <span class="nav-icon">🤝</span>
+                        <span class="nav-text">Alianzas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="nash">
+                        <span class="nav-icon">🎲</span>
+                        <span class="nav-text">Escenarios Nash</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="sombras">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-text">Sombras</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="internacional">
+                        <span class="nav-icon">🌐</span>
+                        <span class="nav-text">Internacional</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
-        <h2 class="section-title">Módulos del Dashboard</h2>
-        <div class="placeholder-grid">
-            <div class="placeholder-card">
-                <div class="icon">🗺️</div>
-                <div class="title">Mapa de Actores</div>
-                <div class="desc">Actores internos con alianzas y funciones de utilidad</div>
-            </div>
-            <div class="placeholder-card">
-                <div class="icon">🏛️</div>
-                <div class="title">Congreso</div>
-                <div class="desc">Diputados + Senado — composición y alianzas</div>
-            </div>
-            <div class="placeholder-card">
-                <div class="icon">🗺️</div>
-                <div class="title">Mapa Provincial</div>
-                <div class="desc">24 provincias y sus alianzas políticas</div>
-            </div>
-            <div class="placeholder-card">
-                <div class="icon">🤝</div>
-                <div class="title">Mapa de Alianzas</div>
-                <div class="desc">Sólidas, débiles y rotas — visualización interactiva</div>
-            </div>
-            <div class="placeholder-card">
-                <div class="icon">🎲</div>
-                <div class="title">Escenarios Nash</div>
-                <div class="desc">Probabilidades y matrices de pagos</div>
-            </div>
-            <div class="placeholder-card">
-                <div class="icon">👥</div>
-                <div class="title">Actores en la Sombra</div>
-                <div class="desc">Judiciales, empresarios, ecosistema digital</div>
-            </div>
-            <div class="placeholder-card">
-                <div class="icon">⛪</div>
-                <div class="title">Religión y Poder Blando</div>
-                <div class="desc">Influencia religiosa en la política argentina</div>
-            </div>
-            <div class="placeholder-card">
-                <div class="icon">🌐</div>
-                <div class="title">Política Internacional</div>
-                <div class="desc">12 bloques y su relación con Argentina</div>
-            </div>
-            <div class="placeholder-card">
-                <div class="icon">📰</div>
-                <div class="title">Feed de Fuentes</div>
-                <div class="desc">Noticias y análisis político en tiempo real</div>
-            </div>
-        </div>
-    </main>
+        <!-- Main Content -->
+        <main class="main">
 
-    <footer class="footer">
-        Tablero Nash — Dashboard político con teoría de juegos · MIT License · <a href="https://github.com/pabloeckert/nash-dashboard" style="color: var(--accent-blue);">GitHub</a>
-    </footer>
+            <!-- ===== DASHBOARD ===== -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h1 class="section-title">Dashboard</h1>
+                    <p class="section-subtitle">Métricas clave del panorama político y económico argentino</p>
+                </div>
+
+                <!-- Metrics -->
+                <div id="metrics-grid" class="metrics-grid"></div>
+
+                <!-- Main modules -->
+                <div class="module-grid">
+                    <div class="module">
+                        <div class="module-header">
+                            <span class="module-title">🗺️ Red de Actores</span>
+                            <span class="module-badge">8 actores</span>
+                        </div>
+                        <div class="module-body">
+                            <div id="network-graph" class="network-graph"></div>
+                        </div>
+                    </div>
+                    <div class="module">
+                        <div class="module-header">
+                            <span class="module-title">🤝 Top Alianzas</span>
+                            <span class="module-badge" id="alliance-count">10</span>
+                        </div>
+                        <div class="module-body">
+                            <div id="alliance-list" class="alliance-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenarios preview -->
+                <div class="module" style="margin-bottom: var(--space-8);">
+                    <div class="module-header">
+                        <span class="module-title">🎲 Escenarios Nash — Próximos 30 días</span>
+                        <span class="module-badge">6 escenarios</span>
+                    </div>
+                    <div class="module-body">
+                        <div id="scenarios-grid" class="scenarios-grid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== ACTORES ===== -->
+            <section id="actores" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Mapa de Actores</h1>
+                    <p class="section-subtitle">Actores internos con alianzas, enemigos y funciones de utilidad</p>
+                </div>
+                <div class="filters">
+                    <button class="filter-btn active">Todos</button>
+                    <button class="filter-btn">Gobierno</button>
+                    <button class="filter-btn">Oposición</button>
+                    <button class="filter-btn">Independientes</button>
+                </div>
+                <div id="actors-grid" class="actors-grid"></div>
+            </section>
+
+            <!-- ===== CONGRESO ===== -->
+            <section id="congreso" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Análisis del Congreso</h1>
+                    <p class="section-subtitle">Composición de Diputados y Senadores por bloque</p>
+                </div>
+                <div class="congress-grid">
+                    <div class="congress-chamber">
+                        <div class="congress-header">Diputados — 257 bancas</div>
+                        <div class="congress-body" id="deputies-body"></div>
+                    </div>
+                    <div class="congress-chamber">
+                        <div class="congress-header">Senadores — 72 bancas</div>
+                        <div class="congress-body" id="senators-body"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== PROVINCIAS ===== -->
+            <section id="provincias" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Mapa Provincial</h1>
+                    <p class="section-subtitle">24 provincias y la alianza política de sus gobernadores</p>
+                </div>
+                <div class="filters">
+                    <button class="filter-btn active">Todas</button>
+                    <button class="filter-btn">Oficialismo</button>
+                    <button class="filter-btn">Oposición</button>
+                    <button class="filter-btn">Independientes</button>
+                </div>
+                <div id="provinces-grid" class="province-grid"></div>
+            </section>
+
+            <!-- ===== ALIANZAS ===== -->
+            <section id="alianzas" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Mapa de Alianzas</h1>
+                    <p class="section-subtitle">Relaciones entre actores: sólidas, débiles y rotas</p>
+                </div>
+                <div class="filters">
+                    <button class="filter-btn active">Todas</button>
+                    <button class="filter-btn">Sólidas</button>
+                    <button class="filter-btn">Débiles</button>
+                    <button class="filter-btn">Rotas</button>
+                </div>
+                <div class="module">
+                    <div class="module-body">
+                        <div id="alliance-list-full" class="alliance-list"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== ESCENARIOS NASH ===== -->
+            <section id="nash" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Escenarios Nash</h1>
+                    <p class="section-subtitle">Modelado estratégico con matrices de pagos y equilibrios</p>
+                </div>
+                <div id="scenarios-grid-full" class="scenarios-grid"></div>
+            </section>
+
+            <!-- ===== ACTORES EN LA SOMBRA ===== -->
+            <section id="sombras" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Actores en la Sombra</h1>
+                    <p class="section-subtitle">Judiciales, empresarios, sindicatos y poder blando</p>
+                </div>
+                <div id="shadows-grid" class="shadows-grid"></div>
+            </section>
+
+            <!-- ===== INTERNACIONAL ===== -->
+            <section id="internacional" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Política Internacional</h1>
+                    <p class="section-subtitle">12 bloques y su relación con Argentina</p>
+                </div>
+                <div id="intl-grid" class="intl-grid"></div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div>
+                Análisis propio basado en fuentes públicas · Los escenarios Nash son modelos teóricos y no predicciones
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/pabloeckert/nash-dashboard" target="_blank">GitHub</a>
+                <span>MIT License</span>
+                <span>v1.0.0</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
