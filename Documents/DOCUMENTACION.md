@@ -8,11 +8,13 @@
 
 | Campo | Valor |
 |-------|-------|
-| **Proyecto** | _(por definir)_ |
+| **Proyecto** | nash-dashboard |
+| **Repositorio** | https://github.com/pabloeckert/nash-dashboard |
 | **Fecha inicio** | 2026-04-25 |
-| **Última actualización** | 2026-04-25 |
-| **Estado** | 🟡 Planificación inicial |
+| **Última actualización** | 2026-04-25 21:14 CST |
+| **Estado** | 🟡 Fase 0 — Fundación en progreso |
 | **Responsable documentación** | AI Assistant |
+| **Branch principal** | master |
 
 ---
 
@@ -108,7 +110,11 @@ _(Pendiente: Software Architect + Cloud Architect)_
 
 | # | Fecha | Decisión | Estado | Rol responsable |
 |---|-------|----------|--------|-----------------|
-| — | — | Pendiente primera iteración | 🟡 | — |
+| ADR-001 | 2026-04-25 | Documentación centralizada en carpeta `Documents/` | ✅ Aprobado | Product Manager + Delivery Manager |
+| ADR-002 | 2026-04-25 | Repositorio en GitHub: `pabloeckert/nash-dashboard` | ✅ Aprobado | DevOps Engineer |
+| ADR-003 | 2026-04-25 | Sistema de comando "documentar" para actualización de docs | ✅ Aprobado | Scrum Master |
+| ADR-004 | 2026-04-25 | Plan por etapas desde 35 perspectivas profesionales | ✅ Aprobado | Product Manager |
+| ADR-005 | 2026-04-25 | Matriz RACI para asignación de responsabilidades | ✅ Aprobado | Delivery Manager |
 
 ---
 
@@ -155,11 +161,14 @@ _(Pendiente: UX Writer + Content Manager)_
 
 ## 9. DevOps e Infraestructura
 
-_(Pendiente: DevOps Engineer + SRE)_
+_(En progreso: DevOps Engineer)_
 
-- Pipeline CI/CD: pendiente
-- SLOs/SLIs: pendiente
-- Observabilidad: pendiente
+- ✅ Repositorio Git inicializado y configurado
+- ✅ Remote configurado: `github.com/pabloeckert/nash-dashboard`
+- ✅ Branch `master` con push automático
+- 🟡 Pipeline CI/CD: pendiente configuración
+- ⚪ SLOs/SLIs: pendiente
+- ⚪ Observabilidad: pendiente
 
 ---
 
@@ -186,6 +195,9 @@ _(Pendiente: Customer Success + Technical Support + RevOps)_
 | Fecha | Autor | Descripción |
 |-------|-------|-------------|
 | 2026-04-25 | AI Assistant | Creación inicial del documento central de documentación |
+| 2026-04-25 21:09 | AI Assistant | Análisis multidisciplinario desde 35 roles profesionales. Creación de PLAN-ETAPAS.md con 8 fases, RACI.md con matriz de responsabilidades, COMANDO-DOCUMENTAR.md con protocolo de actualización |
+| 2026-04-25 21:12 | AI Assistant | Configuración de repositorio Git. Remote: `github.com/pabloeckert/nash-dashboard`. Push inicial a `master`. Sistema de memoria (MEMORY.md + daily notes) inicializado |
+| 2026-04-25 21:14 | AI Assistant | Primera ejecución del comando "documentar". Actualización de DOCUMENTACION.md con avances, ADRs (5 decisiones), sección DevOps actualizada. Registro de trabajo completo en log |
 
 ---
 

@@ -8,7 +8,7 @@
 
 | Fase | Estado | Progreso |
 |------|--------|----------|
-| Fase 0: Fundación | 🟡 En progreso | 10% |
+| Fase 0: Fundación | 🟡 En progreso | 25% |
 | Fase 1: Discovery | ⚪ No iniciada | 0% |
 | Fase 2: Diseño | ⚪ No iniciada | 0% |
 | Fase 3: Desarrollo Core | ⚪ No iniciada | 0% |
@@ -40,9 +40,9 @@ Establecer la base organizativa, técnica y documental del proyecto.
 | **Delivery Manager** | Plan de entrega, gestión de riesgos | Risk Register |
 
 ### Entregables
-- [ ] Repositorio con estructura definida
+- [x] Repositorio con estructura definida — ✅ `github.com/pabloeckert/nash-dashboard`
 - [ ] Pipeline CI/CD funcional (build + test básico)
-- [ ] Documentación central (este archivo)
+- [x] Documentación central (este archivo) — ✅ Carpeta `Documents/` con 4 archivos
 - [ ] Product Vision Document
 - [ ] Backlog inicial en herramienta seleccionada
 - [ ] Security Baseline
@@ -50,10 +50,10 @@ Establecer la base organizativa, técnica y documental del proyecto.
 - [ ] Risk Register
 
 ### Criterios de éxito
-- Repositorio accesible por todo el equipo
-- Pipeline ejecuta correctamente en push
-- Todos los roles tienen acceso a documentación central
-- Visión de producto alineada con stakeholders
+- ✅ Repositorio accesible por todo el equipo — GitHub configurado
+- Pipeline ejecuta correctamente en push — pendiente CI/CD
+- ✅ Todos los roles tienen acceso a documentación central — `Documents/` en repo
+- Visión de producto alineada con stakeholders — pendiente
 
 ---
 
