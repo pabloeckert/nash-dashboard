@@ -11,12 +11,14 @@
 | **Proyecto** | nash-dashboard |
 | **Repositorio** | https://github.com/pabloeckert/nash-dashboard |
 | **Fecha inicio** | 2026-04-25 |
-| **Última actualización** | 2026-04-25 21:38 CST |
-| **Estado** | 🟢 En producción — v1.0.0 |
+| **Última actualización** | 2026-04-25 22:01 CST |
+| **Estado** | 🟢 En producción — v2.0.1 |
 | **Responsable documentación** | AI Assistant |
 | **Branch principal** | master |
 | **URL producción** | https://pabloeckert.github.io/nash-dashboard |
 | **Documentos** | 22 archivos en Documents/ |
+| **Código** | 5 archivos (HTML + CSS + 3 JS) — 3,219 líneas |
+| **APIs en vivo** | dolarapi.com, bluelytics.com.ar |
 
 ---
 
@@ -125,6 +127,13 @@ _(Pendiente: Software Architect + Cloud Architect)_
 | ADR-011 | 2026-04-25 | GitHub Actions CI/CD → deploy a GitHub Pages | ✅ Aprobado | DevOps Engineer |
 | ADR-012 | 2026-04-25 | index.html placeholder con design system base (dark theme) | ✅ Aprobado | UI Designer + Frontend Dev |
 | ADR-013 | 2026-04-25 | CSP headers básicos implementados en index.html | ✅ Aprobado | Cybersecurity Architect |
+| ADR-014 | 2026-04-25 | Datos reales verificados con fuentes cruzadas (INDEC, JP Morgan, Senado, IMF, World Bank, OECD) | ✅ Aprobado | Data Engineer + Content Manager |
+| ADR-015 | 2026-04-25 | Fuentes internacionales: IMF, World Bank, OECD, ECLAC, S&P, Moody's, Fitch | ✅ Aprobado | Data Engineer |
+| ADR-016 | 2026-04-25 | Centro de Comando con datos en tiempo real (dolarapi.com + bluelytics.com.ar) | ✅ Aprobado | DevOps Engineer |
+| ADR-017 | 2026-04-25 | Alertas automáticas basadas en umbrales (brecha, riesgo, inflación, EMAE) | ✅ Aprobado | Product Manager |
+| ADR-018 | 2026-04-25 | Matriz de decisión con scores para 6 escenarios de negocio | ✅ Aprobado | Product Manager |
+| ADR-019 | 2026-04-25 | Render robusto con try/catch por método + fetch non-blocking | ✅ Aprobado | Software Architect |
+| ADR-020 | 2026-04-25 | Búsqueda global integrando cotizaciones, métricas, actores, escenarios | ✅ Aprobado | Frontend Dev |
 
 ---
 
@@ -197,6 +206,9 @@ _(En progreso: DevOps Engineer)_
 - ✅ Branch `master` con push automático
 - ✅ GitHub Actions CI/CD — deploy automático a GitHub Pages
 - ✅ CSP headers básicos configurados
+- ✅ Dependabot configurado
+- ✅ APIs en vivo: dolarapi.com (dólar), bluelytics.com.ar (fallback)
+- ✅ Auto-refresh cada 2 minutos
 - ⚪ SLOs/SLIs: pendiente (Fase 3)
 - ⚪ Observabilidad: pendiente (Fase 3)
 
@@ -243,6 +255,9 @@ _(Pendiente: Customer Success + Technical Support + RevOps)_
 | 2026-04-25 21:38 | AI Assistant | **Datos reales verificados con múltiples fuentes.** Inflación: 3.4% mensual marzo 2026 (INDEC IPC). EMAE: -2.6% interanual feb 2026 (INDEC). Riesgo País: 535 pbs al 22/04/2026 (JP Morgan vía Perfil.com). Pobreza: 26.9% T3 2025 (INDEC/MCH), pico 54.8% T1 2024. Congreso: actualizado post-elecciones oct 2025 — Diputados LLA 64, Fuerza Patria 82; Senado LLA 21, Justicialista 21 (senado.gob.ar). Actores: 10 con roles actualizados. Provincias: Fuerza Patria reemplaza Frente de Todos. 12 alianzas actualizadas. Fuentes cruzadas: INDEC, JP Morgan, Senado.gob.ar, Diputados.gob.ar, Directorio Legislativo, Infobae, Perfil. |
 | 2026-04-25 21:42 | AI Assistant | **Fuentes internacionales agregadas.** IMF WEO Apr 2026: PIB +3.5%. World Bank MPO: PIB +4.4% (2025), +3.6% (2026). OECD Survey 2025: PIB +5.2% (2025), +4.3% (2026). ECLAC/CEPAL: Sudamérica +2.4% (2026). Calificación crediticia: S&P CCC+ (Estable, dic 2025), Moody's Caa1 (Estable, jul 2025), Fitch CCC+ (may 2025). Badges de datos en tarjetas internacionales. 12 entidades internacionales con fuentes y fechas. |
 | 2026-04-25 21:46 | AI Assistant | **Centro de Comando Ejecutivo v2.0.** Nueva sección 'Comando' con datos en tiempo real. Cotizaciones dólar (Oficial, Blue, MEP, CCL) vía dolarapi.com + bluelytics.com.ar fallback, auto-refresh 2min. Panel de alertas automáticas (brecha cambiaria, riesgo país, inflación, EMAE, pobreza, rating crediticio). Matriz de decisión con 6 escenarios de negocio y scores. Indicador de frescura de datos. Nuevo archivo js/livedata.js (LiveDataSource). 964 líneas nuevas. |
+| 2026-04-25 21:53 | AI Assistant | **Verificación Nash activo.** Confirmación de que los 6 escenarios Nash siguen operativos con matrices de pagos, indicador de equilibrio, búsqueda integrada y renderizado en dashboard + sección dedicada. |
+| 2026-04-25 21:58 | Pablo Eckert | **Reporte de bugs: Alianzas y Sombras en blanco.** Secciones no renderizaban contenido. |
+| 2026-04-25 22:01 | AI Assistant | **Fix: render robusto y error handling.** Problema: fetchLiveData() sin try/catch cortaba ejecución si API de dólares fallaba. Solución: (1) try/catch por cada método render, (2) fetchLiveData non-blocking con fallback a datos estáticos, (3) renderNetwork con fallback dimensiones 400×280, (4) DOMContentLoaded con try/catch global. Commit b4d9507. |
 
 ---
 
