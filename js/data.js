@@ -308,20 +308,129 @@ const NASH_DATA = {
     { name: 'Embajada EEUU', type: 'Internacional', influence: 'Alta', description: 'Relación bilateral clave en comercio, deuda y geopolítica.' }
   ],
 
-  // === Bloques internacionales ===
+  // === Bloques internacionales (abril 2026) ===
+  // Fuentes: IMF WEO Apr 2026, World Bank MPO, OECD Survey 2025, ECLAC, TradingEconomics
   international: [
-    { name: '🇺🇸 Estados Unidos', type: 'Bilateral', relation: 65, description: 'Socio comercial y financiero clave. Relación condicionada por deuda y alineamiento geopolítico.' },
-    { name: '🇧🇷 Brasil', type: 'Bilateral', relation: 55, description: 'Principal socio comercial. Tensión por Mercosur y política comercial.' },
-    { name: '🇨🇳 China', type: 'Bilateral', relation: 60, description: 'Segundo socio comercial. Swap cambiario y financiamiento de infraestructura.' },
-    { name: '🇪🇺 Unión Europea', type: 'Bloque', relation: 50, description: 'Mercado destino de exportaciones. Negociación de acuerdo Mercosur-UE.' },
-    { name: '🇷🇺 Rusia', type: 'Bilateral', relation: 45, description: 'Compra de vacunas Sputnik. Tensión por alineamiento post-Ucrania.' },
-    { name: 'Mercosur', type: 'Bloque', relation: 55, description: 'Bloque regional. Debate sobre flexibilización arancelaria.' },
-    { name: 'FMI', type: 'Organismo', relation: 60, description: 'Acreedor principal. Acuerdo stand-by condiciona política económica.' },
-    { name: 'Banco Mundial', type: 'Organismo', relation: 55, description: 'Financiamiento para desarrollo. Proyectos de infraestructura social.' },
-    { name: 'CELAC', type: 'Bloque', relation: 40, description: 'Comunidad de Estados Latinoamericanos. Foro de diálogo regional.' },
-    { name: 'G20', type: 'Bloque', relation: 50, description: 'Foro económico global. Argentina miembro permanente.' },
-    { name: 'ONU', type: 'Organismo', relation: 60, description: 'Organismo multilateral. Participación en misiones de paz.' },
-    { name: 'OEA', type: 'Organismo', relation: 45, description: 'Organización de Estados Americanos. Foro de derechos humanos y democracia.' }
+    {
+      name: '🇺🇸 Estados Unidos',
+      type: 'Bilateral',
+      relation: 65,
+      description: 'Socio comercial y financiero clave. Relación condicionada por deuda y alineamiento geopolítico.',
+      source: 'US State Dept / BCRA',
+      lastUpdate: '2026-04'
+    },
+    {
+      name: '🇧🇷 Brasil',
+      type: 'Bilateral',
+      relation: 55,
+      description: 'Principal socio comercial. Tensión por Mercosur y política comercial.',
+      source: 'SECEX Brasil / INDEC',
+      lastUpdate: '2026-03'
+    },
+    {
+      name: '🇨🇳 China',
+      type: 'Bilateral',
+      relation: 60,
+      description: 'Segundo socio comercial. Swap cambiario USD 18.000M y financiamiento de infraestructura.',
+      source: 'BCRA / Aduana',
+      lastUpdate: '2026-03'
+    },
+    {
+      name: '🇪🇺 Unión Europea',
+      type: 'Bloque',
+      relation: 50,
+      description: 'Mercado destino de exportaciones. Negociación de acuerdo Mercosur-UE en curso.',
+      source: 'European Commission',
+      lastUpdate: '2026-02'
+    },
+    {
+      name: '🇷🇺 Rusia',
+      type: 'Bilateral',
+      relation: 45,
+      description: 'Compra de vacunas Sputnik. Tensión por alineamiento post-Ucrania.',
+      source: 'Cancillería Argentina',
+      lastUpdate: '2025-12'
+    },
+    {
+      name: 'Mercosur',
+      type: 'Bloque',
+      relation: 55,
+      description: 'Bloque regional. Debate sobre flexibilización arancelaria y acuerdo con UE.',
+      source: 'Mercosur Secretaría',
+      lastUpdate: '2026-03'
+    },
+    {
+      name: '🏦 FMI',
+      type: 'Organismo',
+      relation: 60,
+      description: 'Acreedor principal. Acuerdo stand-by condiciona política económica. WEO Apr 2026: PIB Argentina +3.5%.',
+      source: 'IMF WEO April 2026',
+      lastUpdate: '2026-04',
+      data: {
+        gdpGrowth2026: 3.5,
+        inflationForecast: 'en baja',
+        outlook: 'Cautelosamente optimista'
+      }
+    },
+    {
+      name: '🌍 Banco Mundial',
+      type: 'Organismo',
+      relation: 55,
+      description: 'Financiamiento para desarrollo. MPO: PIB +4.4% (2025), +3.6% (2026). Pobreza en baja.',
+      source: 'World Bank MPO 2025',
+      lastUpdate: '2025-10',
+      data: {
+        gdpGrowth2025: 4.4,
+        gdpGrowth2026: 3.6,
+        note: 'Growth rebounded, inflation declining, poverty eased'
+      }
+    },
+    {
+      name: '📊 OECD',
+      type: 'Organismo',
+      relation: 45,
+      description: 'Economic Survey Argentina 2025: PIB +5.2% (2025), +4.3% (2026). Recomienda reforma laboral.',
+      source: 'OECD Economic Survey Argentina 2025',
+      lastUpdate: '2025-07',
+      data: {
+        gdpGrowth2025: 5.2,
+        gdpGrowth2026: 4.3,
+        recommendations: ['Reforma laboral', 'Flexibilización cambiaria', 'Reducción de controles de capital']
+      }
+    },
+    {
+      name: '📈 ECLAC/CEPAL',
+      type: 'Organismo',
+      relation: 50,
+      description: 'Crecimiento Sudamérica 2026: 2.4%. Argentina por encima del promedio regional.',
+      source: 'ECLAC/CEPAL',
+      lastUpdate: '2025-12',
+      data: {
+        southAmericaGrowth2026: 2.4,
+        argentinaVsRegion: 'Por encima del promedio'
+      }
+    },
+    {
+      name: 'CELAC',
+      type: 'Bloque',
+      relation: 40,
+      description: 'Comunidad de Estados Latinoamericanos. Foro de diálogo regional.',
+      source: 'Cancillería',
+      lastUpdate: '2026-01'
+    },
+    {
+      name: '🏅 Calificación Crediticia',
+      type: 'Rating',
+      relation: 35,
+      description: 'S&P: CCC+ (Estable, dic 2025) | Moody\'s: Caa1 (Estable, jul 2025) | Fitch: CCC+ (may 2025). Sub-investment grade.',
+      source: 'S&P / Moody\'s / Fitch vía theglobaleconomy.com',
+      lastUpdate: '2025-12',
+      data: {
+        sp: { rating: 'CCC+', outlook: 'Estable', date: '12/2025' },
+        moodys: { rating: 'Caa1', outlook: 'Estable', date: '07/2025' },
+        fitch: { rating: 'CCC+', outlook: 'NR', date: '05/2025' }
+      }
+    }
   ]
 };
 

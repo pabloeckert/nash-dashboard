@@ -846,6 +846,14 @@ a:hover {
   border-radius: 2px;
 }
 
+.intl-badge {
+  font-size: 0.5625rem;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 /* === Footer === */
 .footer {
   border-top: 1px solid var(--border);

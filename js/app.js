@@ -632,6 +632,23 @@ class NashDashboard {
       const relationColor = i.relation > 60 ? 'var(--accent-green)' :
                             i.relation > 40 ? 'var(--accent-yellow)' : 'var(--accent-red)';
 
+      // Extra data badges
+      let dataBadges = '';
+      if (i.data) {
+        if (i.data.gdpGrowth2026) {
+          dataBadges += `<span class="intl-badge" style="background:rgba(16,185,129,0.1);color:var(--accent-green);border:1px solid rgba(16,185,129,0.2)">PIB 2026: +${i.data.gdpGrowth2026}%</span>`;
+        }
+        if (i.data.rating) {
+          dataBadges += `<span class="intl-badge" style="background:rgba(239,68,68,0.1);color:var(--accent-red);border:1px solid rgba(239,68,68,0.2)">Rating: ${i.data.rating}</span>`;
+        }
+        if (i.data.sp) {
+          dataBadges += `<span class="intl-badge" style="background:rgba(245,158,11,0.1);color:var(--accent-yellow);border:1px solid rgba(245,158,11,0.2)">S&P: ${i.data.sp.rating} | Moody's: ${i.data.moodys.rating}</span>`;
+        }
+        if (i.data.southAmericaGrowth2026) {
+          dataBadges += `<span class="intl-badge" style="background:rgba(139,92,246,0.1);color:var(--accent-purple);border:1px solid rgba(139,92,246,0.2)">Sudamérica 2026: +${i.data.southAmericaGrowth2026}%</span>`;
+        }
+      }
+
       return `
         <div class="intl-card">
           <div class="intl-name">${i.name}</div>
@@ -643,7 +660,11 @@ class NashDashboard {
           <div class="relation-bar" style="margin-top:var(--space-2)">
             <div class="relation-fill" style="width:${i.relation}%;background:${relationColor}"></div>
           </div>
+          ${dataBadges ? `<div style="display:flex;flex-wrap:wrap;gap:var(--space-1);margin-top:var(--space-3)">${dataBadges}</div>` : ''}
           <div style="margin-top:var(--space-3);font-size:0.6875rem;color:var(--text-muted)">${i.description}</div>
+          <div style="margin-top:var(--space-2);font-size:0.5625rem;color:var(--text-muted)">
+            Fuente: ${i.source} · ${i.lastUpdate}
+          </div>
         </div>
       `;
     }).join('');
